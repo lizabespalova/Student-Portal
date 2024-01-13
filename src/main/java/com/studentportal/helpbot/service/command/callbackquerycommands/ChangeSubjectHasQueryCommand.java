@@ -1,8 +1,8 @@
 package com.studentportal.helpbot.service.command.callbackquerycommands;
 
 import com.studentportal.helpbot.model.Customer;
-import com.studentportal.helpbot.model.CustomerRepository;
-import com.studentportal.helpbot.model.RoomsRepository;
+import com.studentportal.helpbot.repository.CustomerRepository;
+import com.studentportal.helpbot.repository.RoomsRepository;
 import com.studentportal.helpbot.service.consts.Subjects;
 import com.studentportal.helpbot.service.consts.Text;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;

@@ -3,9 +3,9 @@ package com.studentportal.helpbot.service.dopclasses;
 //import com.studentportal.StudentPortal.Helpbot.config.HelpbotConfig;
 
 import com.studentportal.helpbot.model.Customer;
-import com.studentportal.helpbot.model.CustomerRepository;
+import com.studentportal.helpbot.repository.CustomerRepository;
 import com.studentportal.helpbot.model.Post;
-import com.studentportal.helpbot.model.PostRepository;
+import com.studentportal.helpbot.repository.PostRepository;
 import com.studentportal.helpbot.service.consts.Text;
 import org.telegram.telegrambots.meta.api.objects.Message;
 

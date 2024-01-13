@@ -2,8 +2,8 @@ package com.studentportal.helpbot.service.command.callbackquerycommands;
 
 
 
-import com.studentportal.helpbot.model.CustomerRepository;
-import com.studentportal.helpbot.model.RoomsRepository;
+import com.studentportal.helpbot.repository.CustomerRepository;
+import com.studentportal.helpbot.repository.RoomsRepository;
 import com.studentportal.helpbot.service.consts.Buttons;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import com.vdurmont.emoji.EmojiParser;

@@ -3,6 +3,7 @@ package com.studentportal.helpbot.service.mainclasses;
 
 import com.studentportal.helpbot.config.HelpbotConfig;
 import com.studentportal.helpbot.model.*;
+import com.studentportal.helpbot.repository.*;
 import com.studentportal.helpbot.service.command.Command.CommandFactory;
 import com.studentportal.helpbot.service.consts.Buttons;
 import com.studentportal.helpbot.service.consts.Quiz;

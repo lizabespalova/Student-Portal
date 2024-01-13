@@ -1,6 +1,9 @@
 package com.studentportal.helpbot.service.command.hasnotnullmessagecommands;
 
 import com.studentportal.helpbot.model.*;
+import com.studentportal.helpbot.repository.CustomerRepository;
+import com.studentportal.helpbot.repository.PurchaseRepository;
+import com.studentportal.helpbot.repository.RoomsRepository;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
