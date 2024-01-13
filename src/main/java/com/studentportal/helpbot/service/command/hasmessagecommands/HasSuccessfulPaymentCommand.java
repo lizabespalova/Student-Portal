@@ -1,7 +1,7 @@
 package com.studentportal.helpbot.service.command.hasmessagecommands;
 
-import com.studentportal.helpbot.model.CustomerRepository;
-import com.studentportal.helpbot.model.RoomsRepository;
+import com.studentportal.helpbot.repository.CustomerRepository;
+import com.studentportal.helpbot.repository.RoomsRepository;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;

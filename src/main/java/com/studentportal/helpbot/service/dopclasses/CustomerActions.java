@@ -1,7 +1,7 @@
 package com.studentportal.helpbot.service.dopclasses;
 
-import com.studentportal.helpbot.model.CustomerRepository;
-import com.studentportal.helpbot.model.PostRepository;
+import com.studentportal.helpbot.repository.CustomerRepository;
+import com.studentportal.helpbot.repository.PostRepository;
 import com.studentportal.helpbot.service.consts.Text;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

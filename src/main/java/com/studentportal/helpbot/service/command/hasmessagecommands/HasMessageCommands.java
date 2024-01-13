@@ -1,6 +1,10 @@
 package com.studentportal.helpbot.service.command.hasmessagecommands;
 
 import com.studentportal.helpbot.model.*;
+import com.studentportal.helpbot.repository.CustomerRepository;
+import com.studentportal.helpbot.repository.PurchaseRepository;
+import com.studentportal.helpbot.repository.RoomsRepository;
+import com.studentportal.helpbot.repository.ThiefRepository;
 import com.studentportal.helpbot.service.command.Commands;
 import com.studentportal.helpbot.service.consts.Text;
 import com.studentportal.helpbot.service.dopclasses.CustomerActions;
