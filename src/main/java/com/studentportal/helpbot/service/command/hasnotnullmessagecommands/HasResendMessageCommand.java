@@ -2,6 +2,7 @@ package com.studentportal.helpbot.service.command.hasnotnullmessagecommands;
 
 import com.studentportal.helpbot.repository.CustomerRepository;
 import com.studentportal.helpbot.repository.RoomsRepository;
+import com.studentportal.helpbot.service.consts.Text;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -33,7 +34,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
         public boolean apply(Update update) {
             Message message = update.getMessage();
             return !customerRepository.findById(message.getFrom().getId()).isEmpty()&&
-                    customerRepository.findById(message.getFrom().getId()).get().getCheckDescriptionState() == 1;
+                    customerRepository.findById(message.getFrom().getId()).get().getCheckDescriptionState() == 1 && message.getText()!= Text.end_text;
         }
     }
 
