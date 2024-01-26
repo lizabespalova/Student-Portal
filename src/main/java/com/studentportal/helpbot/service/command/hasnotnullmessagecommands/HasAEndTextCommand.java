@@ -9,8 +9,8 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 @Component
-public class HasEndTextCommand extends HasNotNullMessageCommands {
-    public HasEndTextCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
+public class HasAEndTextCommand extends HasNotNullMessageCommands {
+    public HasAEndTextCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
         super(helpbot, customerRepository, roomsRepository);
     }
 

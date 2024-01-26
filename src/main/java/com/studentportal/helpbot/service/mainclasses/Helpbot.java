@@ -271,12 +271,12 @@ public class Helpbot extends TelegramLongPollingBot {
         var bot_payment = new InlineKeyboardButton();
         text = EmojiParser.parseToUnicode("Правила оплати" + ":money_with_wings:");
         bot_payment.setText(text);
-        bot_payment.setUrl("https://telegra.ph/Pravila-oplati-01-01");
+        bot_payment.setUrl("https://telegra.ph/Pravila-oplati-v-bot%D1%96-Vedmedik-07-07");
         bot_payment.setCallbackData(Buttons.RULEPAYMENT.toString());
         var bot_relations = new InlineKeyboardButton();
         text = EmojiParser.parseToUnicode("Правила угоди" + ":handshake:");
         bot_relations.setText(text);
-        bot_relations.setUrl("https://telegra.ph/Pravila-ugodi-01-01");
+        bot_relations.setUrl("https://telegra.ph/Pravila-ugodi-v-bot%D1%96-Vedmedik-07-07");
         bot_relations.setCallbackData(Buttons.RULERELATE.toString());
         row_inline1.add(bot_guide);
         row_inline2.add(bot_payment);
