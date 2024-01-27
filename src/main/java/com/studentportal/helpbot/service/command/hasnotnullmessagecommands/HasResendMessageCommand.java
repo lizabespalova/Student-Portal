@@ -34,7 +34,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
         public boolean apply(Update update) {
             Message message = update.getMessage();
             return !customerRepository.findById(message.getFrom().getId()).isEmpty()&&
-                    customerRepository.findById(message.getFrom().getId()).get().getCheckDescriptionState() == 1 /*&& message.getText()!= Text.end_text*/;
+                    customerRepository.findById(message.getFrom().getId()).get().getCheckDescriptionState() == 1 && message.getText()!= Text.end_text;
         }
     }
 
