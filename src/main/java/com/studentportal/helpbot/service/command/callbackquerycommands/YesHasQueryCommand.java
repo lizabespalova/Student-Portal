@@ -134,7 +134,7 @@ public class YesHasQueryCommand extends QueryCommands {
         var payButton = new InlineKeyboardButton();
         payButton.setText(Text.pay);
         payButton.setCallbackData("Сплатити");
-        payButton.setUrl(invoiceLink/*"https://"+paymentLink*/);
+        payButton.setUrl("https://prt.mn/a-sAWPZats"  /*invoiceLink*/);
         row_inline.add(payButton);
         rows_inline.add(row_inline);
         inline_keybord.setKeyboard(rows_inline);
