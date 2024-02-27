@@ -14,10 +14,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 @Component
-public class PerformerRegistwrHasQueryCommand extends QueryCommands {
+public class PerformerRegisterHasQueryCommand extends QueryCommands {
     @Autowired
     private PerformerRepository performerRepository;
-    public PerformerRegistwrHasQueryCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
+    public PerformerRegisterHasQueryCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
         super(helpbot, customerRepository,roomsRepository);
     }
 
