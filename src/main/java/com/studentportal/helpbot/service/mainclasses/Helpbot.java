@@ -84,7 +84,6 @@ public class Helpbot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
