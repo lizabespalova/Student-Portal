@@ -102,7 +102,10 @@ public class Helpbot extends TelegramLongPollingBot {
                 throw new RuntimeException(e);
             }
         }
-
+        if (update.hasMessage()) {
+            commandFactory.getCommand(update, (byte) 3).resolve(update);
+            return;
+        }
         if (message != null) {
             String user_sms = message.getText();
             if (user_sms != null) {
@@ -135,10 +138,7 @@ public class Helpbot extends TelegramLongPollingBot {
                 return;
             }
         }
-        if (update.hasMessage()) {
-            commandFactory.getCommand(update, (byte) 3).resolve(update);
-            return;
-        }
+
     }
 
     public void set_main_menu(String chatId, Message message) {
