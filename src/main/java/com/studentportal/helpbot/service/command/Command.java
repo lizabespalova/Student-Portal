@@ -42,7 +42,7 @@ public interface Command {
                     break;
                 }
                 case 2: {
-                    for (int i = 28; i < 46; i++) {
+                    for (int i = 29; i < 47; i++) {
                         command = commands.get(i);
                         if (command.apply(update)) {
                             return command;
@@ -51,7 +51,7 @@ public interface Command {
                     break;
                 }
                 case 3: {
-                    for (int i = 24; i < 28; i++) {
+                    for (int i = 24; i < 29; i++) {
                         command = commands.get(i);
                         if (command.apply(update)) {
                             return command;
