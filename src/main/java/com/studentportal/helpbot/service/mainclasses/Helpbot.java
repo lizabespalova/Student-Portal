@@ -130,6 +130,7 @@ public class Helpbot extends TelegramLongPollingBot {
                         set_menu_Inline(String.valueOf(message.getChatId()));
                         break;
                     }
+
                 }
                 commandFactory.getCommand(update, (byte) 2).resolve(update);
                 return;
