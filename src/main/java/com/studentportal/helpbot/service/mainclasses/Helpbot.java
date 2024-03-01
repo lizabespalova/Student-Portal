@@ -82,7 +82,7 @@ public class Helpbot extends TelegramLongPollingBot {
         listofCommands.add(new BotCommand("/status", text));
         text = EmojiParser.parseToUnicode(":dove:" + " " + "Допомога");
         listofCommands.add(new BotCommand("/help", text));
-        text = EmojiParser.parseToUnicode(":information:" + " " + "Договір");
+        text = EmojiParser.parseToUnicode(":information_source:" + " " + "Договір");
         listofCommands.add(new BotCommand("/info", text));
         try {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
