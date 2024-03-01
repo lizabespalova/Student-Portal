@@ -15,7 +15,9 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.meta.api.methods.AnswerPreCheckoutQuery;
 import org.telegram.telegrambots.meta.api.methods.commands.SetMyCommands;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.commands.BotCommand;
@@ -27,6 +29,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -78,6 +82,8 @@ public class Helpbot extends TelegramLongPollingBot {
         listofCommands.add(new BotCommand("/status", text));
         text = EmojiParser.parseToUnicode(":dove:" + " " + "Допомога");
         listofCommands.add(new BotCommand("/help", text));
+        text = EmojiParser.parseToUnicode(":information:" + " " + "Договір");
+        listofCommands.add(new BotCommand("/info", text));
         try {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
@@ -130,6 +136,10 @@ public class Helpbot extends TelegramLongPollingBot {
                         set_menu_Inline(String.valueOf(message.getChatId()));
                         break;
                     }
+                    case "/info": {
+                         set_contract(String.valueOf(message.getChatId()));
+                        break;
+                    }
                 }
                 commandFactory.getCommand(update, (byte) 2).resolve(update);
                 return;
@@ -140,6 +150,8 @@ public class Helpbot extends TelegramLongPollingBot {
             return;
         }
     }
+
+
 
     public void set_main_menu(String chatId, Message message) {
         SendMessage main_menu_sms = new SendMessage();
@@ -288,6 +300,18 @@ public class Helpbot extends TelegramLongPollingBot {
         main_menu_sms.setReplyMarkup(inline_keybord);
         try {
             execute(main_menu_sms);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+    public void set_contract(String chatId) {
+        String filePath = "src/main/java/com/studentportal/helpbot/service/command/files/Oferta.docx";
+        InputFile inputFile = new InputFile(new File(filePath));
+        SendDocument contract_sms = new SendDocument();
+        contract_sms.setChatId(chatId);
+        contract_sms.setDocument(inputFile);
+        try {
+            execute(contract_sms);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
