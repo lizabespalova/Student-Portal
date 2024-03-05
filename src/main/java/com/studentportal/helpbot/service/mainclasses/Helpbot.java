@@ -84,6 +84,8 @@ public class Helpbot extends TelegramLongPollingBot {
         listofCommands.add(new BotCommand("/help", text));
         text = EmojiParser.parseToUnicode(":information_source:" + " " + "Договір");
         listofCommands.add(new BotCommand("/info", text));
+        text = EmojiParser.parseToUnicode(":moneybag:" + " " + "Тарифи");
+        listofCommands.add(new BotCommand("/tariffs", text));
         try {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
@@ -139,6 +141,26 @@ public class Helpbot extends TelegramLongPollingBot {
                     case "/info": {
                          set_contract(String.valueOf(message.getChatId()));
                         break;
+                    }
+                    case "/tariffs": {
+                        SendMessage tariff_sms = new SendMessage();
+                        tariff_sms.setChatId(message.getChatId());
+                        tariff_sms.setText("Бот бере відсоток за отримання грошей. За цей відсоток вам гарантується безпека. \n" +
+                                "\n" +
+                                "                                                          Тарифи\n" +
+                                "\n" +
+                                "Спілка до 200 грн: 10 грн з виконавця та користувача \n" +
+                                "\n" +
+                                "Спілка вище або дорівнює 201 грн: 5% від вартості завдання\n" +
+                                "\n" +
+                                "Гроші на рахунок виконавця буде відправлено протягом 3 робочих днів з відрахуванням комісії");
+
+                        try {
+                            // Send the message
+                            execute(tariff_sms);
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
                     }
                 }
                 commandFactory.getCommand(update, (byte) 2).resolve(update);
