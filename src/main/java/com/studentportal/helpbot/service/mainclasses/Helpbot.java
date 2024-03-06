@@ -276,7 +276,7 @@ public class Helpbot extends TelegramLongPollingBot {
     public void help_button(String chatId) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
-        text = EmojiParser.parseToUnicode("Якщо виникли питання звертайтесь до адміністратора:" + ":rose:" + "\n\n\n" + "@lizabespalova");
+        text = EmojiParser.parseToUnicode("Якщо виникли питання звертайтесь до адміністратора:" + ":rose:" + "\n\n\n" + "@lizabespalova"+ "\n\n\n" + "Або за поштою: vedmedykportal@gmail.com");
         sendMessage.setText(text);
         try {
             // Send the message
