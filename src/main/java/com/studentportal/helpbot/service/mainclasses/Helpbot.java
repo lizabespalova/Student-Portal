@@ -272,7 +272,6 @@ public class Helpbot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
     public void help_button(String chatId) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
