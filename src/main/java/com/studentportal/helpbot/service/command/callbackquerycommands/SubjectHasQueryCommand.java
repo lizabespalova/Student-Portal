@@ -31,11 +31,14 @@ public class SubjectHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals(Subjects.MATH.toString())||messagetext.equals(Subjects.PROGRAMMING.toString())||
-                messagetext.equals(Subjects.PHYLOSOPHY.toString())||messagetext.equals(Subjects.GEOGRAPHY.toString())||
-                messagetext.equals(Subjects.LANGUAGES.toString())||messagetext.equals(Subjects.ANOTHER.toString())||
-                messagetext.equals(Subjects.CHEMISTRY.toString())|| messagetext.equals(Subjects.MEDICINE.toString());
+        if(update.hasCallbackQuery()) {
+            messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals(Subjects.MATH.toString()) || messagetext.equals(Subjects.PROGRAMMING.toString()) ||
+                    messagetext.equals(Subjects.PHYLOSOPHY.toString()) || messagetext.equals(Subjects.GEOGRAPHY.toString()) ||
+                    messagetext.equals(Subjects.LANGUAGES.toString()) || messagetext.equals(Subjects.ANOTHER.toString()) ||
+                    messagetext.equals(Subjects.CHEMISTRY.toString()) || messagetext.equals(Subjects.MEDICINE.toString());
+        }
+        return false;
     }
     public void setBranchToTable(Message message, String strsubject){
         if(!customerRepository.findById(message.getChatId()).isEmpty()) {
