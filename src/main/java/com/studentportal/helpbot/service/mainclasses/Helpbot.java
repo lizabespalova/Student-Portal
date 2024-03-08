@@ -35,7 +35,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
-//@Component
+@Component
 public class Helpbot extends TelegramLongPollingBot {
     @Autowired
     private CustomerRepository customerRepository;
