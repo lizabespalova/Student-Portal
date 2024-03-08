@@ -30,7 +30,10 @@ public class IPerformerHasQueryCommand extends QueryCommands{
 
     @Override
     public boolean apply(Update update) {
-        return update.getCallbackQuery().getData().equals(Buttons.PERFOMER.toString());
+        if(update.hasCallbackQuery()) {
+            return update.getCallbackQuery().getData().equals(Buttons.PERFOMER.toString());
+        }
+        return false;
     }
         public void setMenuChoice(Message message){
         SendMessage main_menu_sms = new SendMessage();

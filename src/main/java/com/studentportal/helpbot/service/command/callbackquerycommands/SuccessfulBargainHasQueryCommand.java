@@ -179,7 +179,10 @@ public class SuccessfulBargainHasQueryCommand extends QueryCommands {
     }
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return Character.isDigit(messagetext.charAt(0));
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return Character.isDigit(messagetext.charAt(0));
+        }
+        return false;
     }
 }

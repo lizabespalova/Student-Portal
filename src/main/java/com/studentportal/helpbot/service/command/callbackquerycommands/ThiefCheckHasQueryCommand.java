@@ -22,8 +22,11 @@ public class ThiefCheckHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals("THIEFCHECK");
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals("THIEFCHECK");
+        }
+        return false;
     }
     public void setThiefCheck(Update update){
         SendMessage sendMessage = new SendMessage();

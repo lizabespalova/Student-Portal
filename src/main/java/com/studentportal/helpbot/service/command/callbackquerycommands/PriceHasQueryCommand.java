@@ -39,7 +39,10 @@ public class PriceHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals("PRICE");
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals("PRICE");
+        }
+        return false;
     }
 }

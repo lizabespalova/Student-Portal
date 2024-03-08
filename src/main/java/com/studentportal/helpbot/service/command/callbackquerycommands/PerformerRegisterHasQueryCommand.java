@@ -29,8 +29,11 @@ public class PerformerRegisterHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals(Subjects.PERFORMER_REGISTER.toString());
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals(Subjects.PERFORMER_REGISTER.toString());
+        }
+        return false;
     }
     public void register_to_data_base_performer(User user, String chatid){
         if(performerRepository.findById(user.getId()).isEmpty()) {

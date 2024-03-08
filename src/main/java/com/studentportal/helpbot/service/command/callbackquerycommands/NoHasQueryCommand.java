@@ -45,8 +45,11 @@ public class NoHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals("NO");
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals("NO");
+        }
+        return false;
     }
     public void check_performer_return_no(Update update, int user_price)throws IOException{
         long chatID = 0;

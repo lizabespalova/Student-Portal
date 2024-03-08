@@ -38,8 +38,11 @@ public class GetAdvertismentHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals("Візьму");
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals("Візьму");
+        }
+        return false;
     }
     public void performer_check(User user, String chatID, int messageID){
         long customerID = postRepository.findById(messageID).get().getCustomer_id();

@@ -30,8 +30,11 @@ public class ChangeSubjectHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals(Subjects.CHANGE.toString());
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals(Subjects.CHANGE.toString());
+        }
+        return false;
     }
     public void set_change_menu(String chatId) {
         SendMessage main_menu_sms = new SendMessage();

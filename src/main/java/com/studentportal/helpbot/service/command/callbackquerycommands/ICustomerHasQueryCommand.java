@@ -23,7 +23,10 @@ public class ICustomerHasQueryCommand extends QueryCommands{
 
     @Override
     public boolean apply(Update update) {
-        return update.getCallbackQuery().getData().equals(Buttons.CUSTOMER.toString());
+        if(update.hasCallbackQuery()) {
+            return update.getCallbackQuery().getData().equals(Buttons.CUSTOMER.toString());
+        }
+        return false;
     }
     public void setForCustomer(Message message){
         SendMessage main_menu_sms = new SendMessage();

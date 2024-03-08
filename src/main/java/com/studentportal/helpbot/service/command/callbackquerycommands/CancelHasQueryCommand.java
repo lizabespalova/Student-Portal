@@ -22,8 +22,11 @@ public class CancelHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals(Subjects.CANCEL.toString());
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals(Subjects.CANCEL.toString());
+        }
+        return false;
     }
     private void bargain_cancel(long chatID, Update update) {
         EditMessageText editMessageText = new EditMessageText();

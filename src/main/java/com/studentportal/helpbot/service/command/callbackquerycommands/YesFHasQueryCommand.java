@@ -46,8 +46,11 @@ public class YesFHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals("YESF");
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals("YESF");
+        }
+        return false;
     }
     public void closeBargain(Update update){
         long performerID=0;

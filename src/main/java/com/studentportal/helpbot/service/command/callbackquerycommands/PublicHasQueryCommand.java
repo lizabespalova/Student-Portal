@@ -112,8 +112,11 @@ public class PublicHasQueryCommand extends QueryCommands {
     }
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals(Subjects.PUBLIC.toString());
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals(Subjects.PUBLIC.toString());
+        }
+        return false;
     }
     public void set_warning(String chatId){
         SendMessage sendMessage = new SendMessage();

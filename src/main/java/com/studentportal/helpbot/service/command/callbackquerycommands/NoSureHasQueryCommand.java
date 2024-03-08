@@ -20,8 +20,11 @@ public class NoSureHasQueryCommand extends QueryCommands {
 
     @Override
     public boolean apply(Update update) {
-        var messagetext = update.getCallbackQuery().getData();
-        return messagetext.equals("NOSURE");
+        if(update.hasCallbackQuery()) {
+            var messagetext = update.getCallbackQuery().getData();
+            return messagetext.equals("NOSURE");
+        }
+        return false;
     }
     public void setArrangeOnceMore(Update update){
         SendMessage sendMessage = new SendMessage();
