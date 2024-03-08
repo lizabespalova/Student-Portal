@@ -1,5 +1,6 @@
 package com.studentportal.helpbot.service.command;
 
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -15,7 +16,7 @@ public interface Command {
 
 
     @Component
-//    @AllArgsConstructor
+    //@AllArgsConstructor
     class CommandFactory {
 
         private final List<Command> commands;
