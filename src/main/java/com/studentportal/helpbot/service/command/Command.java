@@ -20,7 +20,7 @@ public interface Command {
 
         private final List<Command> commands;
         private Command command;
-
+        @Lazy
         public CommandFactory(List<Command> commands) {
             this.commands = commands;
         }
