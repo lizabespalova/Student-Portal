@@ -19,7 +19,6 @@ public interface Command {
     @Component
             //@AllArgsConstructor
     class CommandFactory {
-
         private List<BotHasMessageCommand> botHasMessageCommands;
         private List<BotHasQueryCommand> botHasQueryCommands;
         private List<BotHasNotNullMessageCommand> botHasNotNullMessageCommands;
