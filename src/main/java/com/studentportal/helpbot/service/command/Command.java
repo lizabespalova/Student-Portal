@@ -31,11 +31,6 @@ public interface Command {
         }
 
         public Command getCommand(Update update, byte check) {
-//            for (Command command : commands) {
-//                if (command.apply(update)) {
-//                    return command;
-//                }
-//            }
             switch (check) {
                 case 1: {
                     for (var command : botHasQueryCommands) {
