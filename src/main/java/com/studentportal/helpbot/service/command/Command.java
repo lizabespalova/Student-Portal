@@ -20,7 +20,7 @@ public interface Command {
     class CommandFactory {
 
         private final List<Command> commands;
-        private Command command;
+        //private Command command;
         @Lazy
         public CommandFactory(List<Command> commands) {
             this.commands = commands;
@@ -35,7 +35,7 @@ public interface Command {
             switch (check) {
                 case 1: {
                     for (int i = 0; i < 24; i++) {
-                        command = commands.get(i);
+                        var command = commands.get(i);
                         if (command.apply(update)) {
                             return command;
                         }
@@ -44,7 +44,7 @@ public interface Command {
                 }
                 case 2: {
                     for (int i = 28; i < 46; i++) {
-                        command = commands.get(i);
+                       var command = commands.get(i);
                         if (command.apply(update)) {
                             return command;
                         }
@@ -53,7 +53,7 @@ public interface Command {
                 }
                 case 3: {
                     for (int i = 24; i < 28; i++) {
-                        command = commands.get(i);
+                       var command = commands.get(i);
                         if (command.apply(update)) {
                             return command;
                         }
@@ -61,9 +61,9 @@ public interface Command {
                     break;
                 }
                 default:
-                    throw new IllegalArgumentException();
+                    throw new IllegalArgumentException("Command not found total Number of Commands"+commands.size());
             }
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Command not found total Number of Commands"+commands.size());
         }
     }
 }
