@@ -61,6 +61,5 @@ public interface Command {
             }
             throw new IllegalArgumentException("Command not found total Number of Commands");
         }
-
     }
 }
