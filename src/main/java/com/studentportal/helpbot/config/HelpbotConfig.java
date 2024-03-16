@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @Configuration
 @EnableScheduling
 @Data
+@PropertySource("classpath:application.properties")
 public class HelpbotConfig {
     @Value("${telegram.help.bot.username}")
     private final String username;
