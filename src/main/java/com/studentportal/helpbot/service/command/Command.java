@@ -23,7 +23,6 @@ public interface Command {
         private List<BotHasQueryCommand> botHasQueryCommands;
         private List<BotHasNotNullMessageCommand> botHasNotNullMessageCommands;
 
-        //private Command command;
         @Lazy
         public CommandFactory(List<Command> commands, List<BotHasMessageCommand> botHasMessageCommands, List<BotHasQueryCommand> botHasQueryCommands, List<BotHasNotNullMessageCommand> botHasNotNullMessageCommands) {
             this.botHasMessageCommands = botHasMessageCommands;
