@@ -9,17 +9,17 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 
 
 
-@Data
+@Configuration
 @PropertySource("classpath:application.properties")
 public class HelpbotConfig {
     @Value("${telegram.help.bot.username}")
-    private final String username;
+    private  String username;
 
     @Value("${telegram.help.bot.token}")
-    private final String token;
+    private  String token;
 
     @Value("${telegram.help.bot.tokenpay}")
-    private final String tokenPay;
+    private  String tokenPay;
 
 
 }
