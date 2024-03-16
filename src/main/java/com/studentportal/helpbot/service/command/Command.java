@@ -1,6 +1,8 @@
 package com.studentportal.helpbot.service.command;
 
-import lombok.AllArgsConstructor;
+import com.studentportal.helpbot.service.command.callbackquerycommands.BotHasQueryCommand;
+import com.studentportal.helpbot.service.command.hasmessagecommands.BotHasMessageCommand;
+import com.studentportal.helpbot.service.command.hasnotnullmessagecommands.BotHasNotNullMessageCommand;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -14,16 +16,20 @@ public interface Command {
     boolean apply(Update update);
 
 
-
     @Component
-    //@AllArgsConstructor
+            //@AllArgsConstructor
     class CommandFactory {
 
-        private final List<Command> commands;
+        private List<BotHasMessageCommand> botHasMessageCommands;
+        private List<BotHasQueryCommand> botHasQueryCommands;
+        private List<BotHasNotNullMessageCommand> botHasNotNullMessageCommands;
+
         //private Command command;
         @Lazy
-        public CommandFactory(List<Command> commands) {
-            this.commands = commands;
+        public CommandFactory(List<Command> commands, List<BotHasMessageCommand> botHasMessageCommands, List<BotHasQueryCommand> botHasQueryCommands, List<BotHasNotNullMessageCommand> botHasNotNullMessageCommands) {
+            this.botHasMessageCommands = botHasMessageCommands;
+            this.botHasQueryCommands = botHasQueryCommands;
+            this.botHasNotNullMessageCommands = botHasNotNullMessageCommands;
         }
 
         public Command getCommand(Update update, byte check) {
@@ -34,8 +40,7 @@ public interface Command {
 //            }
             switch (check) {
                 case 1: {
-                    for (int i = 0; i < 24; i++) {
-                        var command = commands.get(i);
+                    for (var command : botHasQueryCommands) {
                         if (command.apply(update)) {
                             return command;
                         }
@@ -43,8 +48,7 @@ public interface Command {
                     break;
                 }
                 case 2: {
-                    for (int i = 28; i < 46; i++) {
-                       var command = commands.get(i);
+                    for (var command : botHasNotNullMessageCommands) {
                         if (command.apply(update)) {
                             return command;
                         }
@@ -52,8 +56,7 @@ public interface Command {
                     break;
                 }
                 case 3: {
-                    for (int i = 24; i < 28; i++) {
-                       var command = commands.get(i);
+                    for (var command : botHasMessageCommands) {
                         if (command.apply(update)) {
                             return command;
                         }
@@ -61,9 +64,9 @@ public interface Command {
                     break;
                 }
                 default:
-                    throw new IllegalArgumentException("Command not found total Number of Commands"+commands.size());
+                    throw new IllegalArgumentException("Command not found total Number of Commands");
             }
-            throw new IllegalArgumentException("Command not found total Number of Commands"+commands.size());
+            throw new IllegalArgumentException("Command not found total Number of Commands");
         }
 
     }

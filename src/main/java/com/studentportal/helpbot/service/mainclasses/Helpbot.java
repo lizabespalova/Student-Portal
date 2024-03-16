@@ -98,15 +98,6 @@ public class Helpbot extends TelegramLongPollingBot {
         Message message = update.getMessage();
 //        const_text= new Text();
         if (update.hasCallbackQuery()) {
-            SendMessage tariff_sms = new SendMessage();
-            tariff_sms.setChatId(message.getChatId());
-            tariff_sms.setText("Вот где хрень");
-            try {
-                // Send the message
-                execute(tariff_sms);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
-            }
             commandFactory.getCommand(update, (byte) 1).resolve(update);
             return;
         }
