@@ -12,22 +12,14 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableScheduling
 @Data
 public class HelpbotConfig {
-    @Value("${BOT_NAME}")
+    @Value("${telegram.help.bot.username}")
     private final String username;
 
-    @Value("${TOKEN}")
+    @Value("${telegram.help.bot.token}")
     private final String token;
 
-    @Value("${TOKEN_PAY}")
+    @Value("${telegram.help.bot.tokenpay}")
     private final String tokenPay;
 
-    public HelpbotConfig(
-            @Value("${BOT_NAME}") String username,
-            @Value("${TOKEN}") String token,
-            @Value("${TOKEN_PAY}") String tokenPay
-    ) {
-        this.username = username;
-        this.token = token;
-        this.tokenPay = tokenPay;
-    }
+
 }
