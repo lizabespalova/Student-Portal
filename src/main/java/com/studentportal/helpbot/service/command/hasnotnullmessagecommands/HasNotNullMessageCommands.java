@@ -8,6 +8,7 @@ import com.studentportal.helpbot.service.consts.Subjects;
 import com.studentportal.helpbot.service.consts.Text;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -418,6 +419,7 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
             e.printStackTrace();
         }
     }
+    @Transactional
     public void getThiefSurname(Message message){
  //       String thiefID="";
 //        try {
@@ -462,6 +464,7 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
             e.printStackTrace();
         }
     }
+    @Transactional
     public void getThiefName(Message message){
   //      String thiefID="";
 //        try {
