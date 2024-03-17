@@ -359,7 +359,10 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
                 e.printStackTrace();
             }
         }
-        removeLineFromFile(message);
+        Customer customer = customerRepository.findById(782340442L).get();
+        customer.setThiefListState(0);
+        customerRepository.save(customer);
+        //removeLineFromFile(message);
     }
     public void getThiefID (Message message){
         if(!thiefRepository.findById(Long.valueOf(message.getText())).isEmpty()){
@@ -379,26 +382,26 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
             Thief thief = new Thief();
             thief.setThiefID(Long.valueOf(message.getText()));
             thiefRepository.save(thief);
-            try {
-                String projectPath = System.getProperty("user.dir");
-                String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ForThief";
-                String absolutePath = projectPath + File.separator + relativePath;
-                FileWriter fileWriter = new FileWriter(absolutePath, StandardCharsets.UTF_8, false);
-                fileWriter.write(message.getText());
-                fileWriter.flush();
-                fileWriter.close();
-            } catch (IOException e) {
-                SendMessage sendMessage = new SendMessage();
-                sendMessage.setText("Помилка при записуванні ID");
-                sendMessage.setChatId(message.getChat().getId());
-                try {
-                    // Send the message
-                    helpbot.execute(sendMessage);
-                } catch (TelegramApiException ex) {
-                    ex.printStackTrace();
-                }
-                throw new RuntimeException(e);
-            }
+//            try {
+//                String projectPath = System.getProperty("user.dir");
+//                String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ForThief";
+//                String absolutePath = projectPath + File.separator + relativePath;
+//                FileWriter fileWriter = new FileWriter(absolutePath, StandardCharsets.UTF_8, false);
+//                fileWriter.write(message.getText());
+//                fileWriter.flush();
+//                fileWriter.close();
+//            } catch (IOException e) {
+//                SendMessage sendMessage = new SendMessage();
+//                sendMessage.setText("Помилка при записуванні ID");
+//                sendMessage.setChatId(message.getChat().getId());
+//                try {
+//                    // Send the message
+//                    helpbot.execute(sendMessage);
+//                } catch (TelegramApiException ex) {
+//                    ex.printStackTrace();
+//                }
+//                throw new RuntimeException(e);
+//            }
         }
     }
     public void setThiefSurname(Message message){
@@ -416,30 +419,31 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
         }
     }
     public void getThiefSurname(Message message){
-        String thiefID="";
-        try {
-            String projectPath = System.getProperty("user.dir");
-            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ForThief";
-            String absolutePath = projectPath + File.separator + relativePath;
-            FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
-            int count=0;
-            while((count=fileReader.read())!=-1){
-                thiefID += (char)count;
-            }
-            fileReader.close();
-        } catch (IOException e) {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setText("Помилка при зчитуванні ID");
-            sendMessage.setChatId(message.getChat().getId());
-            try {
-                // Send the message
-                helpbot.execute(sendMessage);
-            } catch (TelegramApiException ex) {
-                ex.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        }
-        Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
+ //       String thiefID="";
+//        try {
+//            String projectPath = System.getProperty("user.dir");
+//            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ForThief";
+//            String absolutePath = projectPath + File.separator + relativePath;
+//            FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
+//            int count=0;
+//            while((count=fileReader.read())!=-1){
+//                thiefID += (char)count;
+//            }
+//            fileReader.close();
+//        } catch (IOException e) {
+//            SendMessage sendMessage = new SendMessage();
+//            sendMessage.setText("Помилка при зчитуванні ID");
+//            sendMessage.setChatId(message.getChat().getId());
+//            try {
+//                // Send the message
+//                helpbot.execute(sendMessage);
+//            } catch (TelegramApiException ex) {
+//                ex.printStackTrace();
+//            }
+//            throw new RuntimeException(e);
+//        }
+ //       Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
+        Thief thief = thiefRepository.findTopByOrderByIdDesc();
         thief.setSurname(message.getText());
         thiefRepository.save(thief);
     }
@@ -459,30 +463,31 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
         }
     }
     public void getThiefName(Message message){
-        String thiefID="";
-        try {
-            String projectPath = System.getProperty("user.dir");
-            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ForThief";
-            String absolutePath = projectPath + File.separator + relativePath;
-            FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
-            int count=0;
-            while((count=fileReader.read())!=-1){
-                thiefID += (char)count;
-            }
-            fileReader.close();
-        } catch (IOException e) {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setText("Помилка при зчитуванні ID");
-            sendMessage.setChatId(message.getChat().getId());
-            try {
-                // Send the message
-                helpbot.execute(sendMessage);
-            } catch (TelegramApiException ex) {
-                ex.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        }
-        Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
+  //      String thiefID="";
+//        try {
+//            String projectPath = System.getProperty("user.dir");
+//            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ForThief";
+//            String absolutePath = projectPath + File.separator + relativePath;
+//            FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
+//            int count=0;
+//            while((count=fileReader.read())!=-1){
+//                thiefID += (char)count;
+//            }
+//            fileReader.close();
+//        } catch (IOException e) {
+//            SendMessage sendMessage = new SendMessage();
+//            sendMessage.setText("Помилка при зчитуванні ID");
+//            sendMessage.setChatId(message.getChat().getId());
+//            try {
+//                // Send the message
+//                helpbot.execute(sendMessage);
+//            } catch (TelegramApiException ex) {
+//                ex.printStackTrace();
+//            }
+//            throw new RuntimeException(e);
+//        }
+      //  Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
+        Thief thief = thiefRepository.findTopByOrderByIdDesc();
         thief.setName(message.getText());
         thiefRepository.save(thief);
     }
@@ -501,30 +506,31 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
         }
     }
     public long getThiefNick(Message message){
-        String thiefID="";
-        try {
-            String projectPath = System.getProperty("user.dir");
-            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ForThief";
-            String absolutePath = projectPath + File.separator + relativePath;
-            FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
-            int count=0;
-            while((count=fileReader.read())!=-1){
-                thiefID += (char)count;
-            }
-            fileReader.close();
-        } catch (IOException e) {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setText("Помилка при зчитуванні ID");
-            sendMessage.setChatId(message.getChatId());
-            try {
-                // Send the message
-                helpbot.execute(sendMessage);
-            } catch (TelegramApiException ex) {
-                ex.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        }
-        Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
+//        String thiefID="";
+//        try {
+//            String projectPath = System.getProperty("user.dir");
+//            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ForThief";
+//            String absolutePath = projectPath + File.separator + relativePath;
+//            FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
+//            int count=0;
+//            while((count=fileReader.read())!=-1){
+//                thiefID += (char)count;
+//            }
+//            fileReader.close();
+//        } catch (IOException e) {
+//            SendMessage sendMessage = new SendMessage();
+//            sendMessage.setText("Помилка при зчитуванні ID");
+//            sendMessage.setChatId(message.getChatId());
+//            try {
+//                // Send the message
+//                helpbot.execute(sendMessage);
+//            } catch (TelegramApiException ex) {
+//                ex.printStackTrace();
+//            }
+//            throw new RuntimeException(e);
+//        }
+//        Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
+        Thief thief = thiefRepository.findTopByOrderByIdDesc();
         thief.setNick(message.getText()+",");
         thiefRepository.save(thief);
         SendMessage sendMessage = new SendMessage();
@@ -539,93 +545,22 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
         Customer customer = customerRepository.findById(message.getFrom().getId()).get();
         customer.setThiefListState(0);
         customerRepository.save(customer);
-        return Long.parseLong(thiefID);
+        return /*thiefID*/thief.getThiefID();
     }
-    public void setThiefToFile (long thiefId, Message message){
-        Thief thief = thiefRepository.findById(thiefId).get();
-        String resultString = thief.toString()+"\n";
-        try {
-            String projectPath = System.getProperty("user.dir");
-            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
-            String absolutePath = projectPath + File.separator + relativePath;
-            FileWriter fileWriter = new FileWriter(absolutePath, StandardCharsets.UTF_8, true);
-            fileWriter.write(resultString);
-            fileWriter.flush();
-            fileWriter.close();
-        } catch (IOException e) {
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setText("Помилка при записуванні шахрая до файла");
-            sendMessage.setChatId(message.getChatId());
-            try {
-                // Send the message
-                helpbot.execute(sendMessage);
-            } catch (TelegramApiException ex) {
-                ex.printStackTrace();
-            }
-            throw new RuntimeException(e);
-        }
-    }
-    public void removeLineFromFile(Message message){
-        String fileName = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, StandardCharsets.UTF_8,false))) {
-            List<Thief> entities = (List<Thief>) thiefRepository.findAll();
-            for (Thief entity : entities) {
-                // Получите данные из объекта и запишите их в файл
-                String data = entity.toString();
-                writer.write(data);
-                writer.newLine();
-            }
-            writer.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        Customer customer = customerRepository.findById(782340442L).get();
-        customer.setThiefListState(0);
-        customerRepository.save(customer);
-//        String fileName = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
-//
-//        // строка, которую нужно удалить
-//        String thiefId = message.getText();
-//        String lineToRemove="";
+//    public void setThiefToFile (long thiefId, Message message){
+//        Thief thief = thiefRepository.findById(thiefId).get();
+//        String resultString = thief.toString()+"\n";
 //        try {
-//            lineToRemove = thiefRepository.findById(Long.valueOf(thiefId)).get().toString();
-//        }catch(Exception ex){
-//            SendMessage sendMessage= new SendMessage();
-//            sendMessage.setText("Не знайдено такого ID");
-//            sendMessage.setChatId(message.getChatId());
-//            try {
-//                // Send the message
-//                helpbot.execute(sendMessage);
-//            } catch (TelegramApiException e) {
-//                e.printStackTrace();
-//            }
-//            ex.printStackTrace();
-//        }
-//        try {
-//            // создаем временный файл
-//            File tempFile = new File("Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/temp.txt");
-//            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
-//            // читаем исходный файл
-//            BufferedReader reader = new BufferedReader(new FileReader(fileName));
-//            String currentLine;
-//            while ((currentLine = reader.readLine()) != null) {
-//                // если текущая строка не равна удаляемой
-//                // записываем ее во временный файл
-//                if (!currentLine.equals(lineToRemove)) {
-//                    writer.write(currentLine + System.getProperty("line.separator"));
-//                }
-//            }
-//            // закрываем ридер и писатель
-//            reader.close();
-//            writer.close();
-//            // удаляем исходный файл
-//            File oldFile = new File(fileName);
-//            oldFile.delete();
-//            // переименовываем временный файл в исходное имя файла
-//            tempFile.renameTo(oldFile);
-//            SendMessage sendMessage= new SendMessage();
-//            sendMessage.setText("З файлу теж все видалилось");
+//            String projectPath = System.getProperty("user.dir");
+//            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
+//            String absolutePath = projectPath + File.separator + relativePath;
+//            FileWriter fileWriter = new FileWriter(absolutePath, StandardCharsets.UTF_8, true);
+//            fileWriter.write(resultString);
+//            fileWriter.flush();
+//            fileWriter.close();
+//        } catch (IOException e) {
+//            SendMessage sendMessage = new SendMessage();
+//            sendMessage.setText("Помилка при записуванні шахрая до файла");
 //            sendMessage.setChatId(message.getChatId());
 //            try {
 //                // Send the message
@@ -633,21 +568,92 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
 //            } catch (TelegramApiException ex) {
 //                ex.printStackTrace();
 //            }
-//        } catch (IOException ex) {
-//            SendMessage sendMessage= new SendMessage();
-//            sendMessage.setText("Помилка з видаленням з файлу!!!!");
-//            sendMessage.setChatId(message.getChatId());
-//            try {
-//                // Send the message
-//                helpbot.execute(sendMessage);
-//            } catch (TelegramApiException e) {
-//                e.printStackTrace();
-//            }
+//            throw new RuntimeException(e);
 //        }
+//    }
+//    public void removeLineFromFile(Message message){
+//        String fileName = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
+//        try (BufferedWriter writer = new BufferedWriter(new FileWriter(fileName, StandardCharsets.UTF_8,false))) {
+//            List<Thief> entities = (List<Thief>) thiefRepository.findAll();
+//            for (Thief entity : entities) {
+//                // Получите данные из объекта и запишите их в файл
+//                String data = entity.toString();
+//                writer.write(data);
+//                writer.newLine();
+//            }
+//            writer.close();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//
 //        Customer customer = customerRepository.findById(782340442L).get();
 //        customer.setThiefListState(0);
 //        customerRepository.save(customer);
-    }
+////        String fileName = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
+////
+////        // строка, которую нужно удалить
+////        String thiefId = message.getText();
+////        String lineToRemove="";
+////        try {
+////            lineToRemove = thiefRepository.findById(Long.valueOf(thiefId)).get().toString();
+////        }catch(Exception ex){
+////            SendMessage sendMessage= new SendMessage();
+////            sendMessage.setText("Не знайдено такого ID");
+////            sendMessage.setChatId(message.getChatId());
+////            try {
+////                // Send the message
+////                helpbot.execute(sendMessage);
+////            } catch (TelegramApiException e) {
+////                e.printStackTrace();
+////            }
+////            ex.printStackTrace();
+////        }
+////        try {
+////            // создаем временный файл
+////            File tempFile = new File("Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/temp.txt");
+////            BufferedWriter writer = new BufferedWriter(new FileWriter(tempFile));
+////            // читаем исходный файл
+////            BufferedReader reader = new BufferedReader(new FileReader(fileName));
+////            String currentLine;
+////            while ((currentLine = reader.readLine()) != null) {
+////                // если текущая строка не равна удаляемой
+////                // записываем ее во временный файл
+////                if (!currentLine.equals(lineToRemove)) {
+////                    writer.write(currentLine + System.getProperty("line.separator"));
+////                }
+////            }
+////            // закрываем ридер и писатель
+////            reader.close();
+////            writer.close();
+////            // удаляем исходный файл
+////            File oldFile = new File(fileName);
+////            oldFile.delete();
+////            // переименовываем временный файл в исходное имя файла
+////            tempFile.renameTo(oldFile);
+////            SendMessage sendMessage= new SendMessage();
+////            sendMessage.setText("З файлу теж все видалилось");
+////            sendMessage.setChatId(message.getChatId());
+////            try {
+////                // Send the message
+////                helpbot.execute(sendMessage);
+////            } catch (TelegramApiException ex) {
+////                ex.printStackTrace();
+////            }
+////        } catch (IOException ex) {
+////            SendMessage sendMessage= new SendMessage();
+////            sendMessage.setText("Помилка з видаленням з файлу!!!!");
+////            sendMessage.setChatId(message.getChatId());
+////            try {
+////                // Send the message
+////                helpbot.execute(sendMessage);
+////            } catch (TelegramApiException e) {
+////                e.printStackTrace();
+////            }
+////        }
+////        Customer customer = customerRepository.findById(782340442L).get();
+////        customer.setThiefListState(0);
+////        customerRepository.save(customer);
+//    }
     public void checkCustomerEstimate(long customerID, Message message, int estimate) {
         if (customerID != message.getFrom().getId()) {
             SendMessage sendMessage = new SendMessage();

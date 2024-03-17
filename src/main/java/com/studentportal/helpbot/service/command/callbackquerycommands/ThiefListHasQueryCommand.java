@@ -1,11 +1,14 @@
 package com.studentportal.helpbot.service.command.callbackquerycommands;
 
 import com.studentportal.helpbot.model.Customer;
+import com.studentportal.helpbot.model.Thief;
 import com.studentportal.helpbot.repository.CustomerRepository;
 import com.studentportal.helpbot.repository.RoomsRepository;
+import com.studentportal.helpbot.repository.ThiefRepository;
 import com.studentportal.helpbot.service.consts.Text;
 import com.studentportal.helpbot.service.dopclasses.CustomerActions;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -23,7 +26,8 @@ public class ThiefListHasQueryCommand extends QueryCommands {
     public ThiefListHasQueryCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
         super(helpbot, customerRepository, roomsRepository);
     }
-
+    @Autowired
+    private ThiefRepository thiefRepository;
     @Override
     public void resolve(Update update) {
         showThiefList(update);
@@ -38,29 +42,40 @@ public class ThiefListHasQueryCommand extends QueryCommands {
         return false;
     }
     public void showThiefList(Update update){
-        String list = "";
-        String resultString="";
-        try {
-            String projectPath = System.getProperty("user.dir");
-            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
-            String absolutePath = projectPath + File.separator + relativePath;
-            FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
-            BufferedReader br = new BufferedReader(fileReader);
-            for(int i=0; i<10;i++){
-                list += br.readLine();
-            }
-            fileReader.close();
-            br.close();
-            list=list.replace("null", "");
-            resultString = thiefRow(list,1);
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
+//        String list = "";
+//        String resultString="";
+//        try {
+//            String projectPath = System.getProperty("user.dir");
+//            String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
+//            String absolutePath = projectPath + File.separator + relativePath;
+//            FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
+//            BufferedReader br = new BufferedReader(fileReader);
+//            for(int i=0; i<10;i++){
+//                list += br.readLine();
+//            }
+//            fileReader.close();
+//            br.close();
+//            list=list.replace("null", "");
+//            resultString = thiefRow(list,1);
+//        } catch (FileNotFoundException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
+        List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
+        StringBuilder stringBuilder = new StringBuilder();
+
+        for (Thief thief : thieves) {
+            stringBuilder.append("Id: ").append(thief.getThiefID()).append(", ")
+                    .append("Name: ").append(thief.getName()).append(", ")
+                    .append("Age: ").append(thief.getSurname()).append(", ")
+                    .append("Status: ").append(thief.getName()).append("\n");
         }
 
+
+        String resultString = stringBuilder.toString();
         CustomerActions customerActions = new CustomerActions(customerRepository);
-        list = customerActions.getThiefList(resultString);
+        String list = customerActions.getThiefList(resultString);
         SendMessage sendMessage=new SendMessage();
         sendMessage.setChatId(update.getCallbackQuery().getFrom().getId());
         sendMessage.setText(list);

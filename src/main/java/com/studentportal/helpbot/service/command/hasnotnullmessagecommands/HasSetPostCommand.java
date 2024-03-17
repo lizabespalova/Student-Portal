@@ -4,6 +4,7 @@ import com.studentportal.helpbot.model.Customer;
 import com.studentportal.helpbot.repository.CustomerRepository;
 import com.studentportal.helpbot.repository.RoomsRepository;
 import com.studentportal.helpbot.service.consts.Quiz;
+import com.studentportal.helpbot.service.consts.Text;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -41,7 +42,7 @@ public class HasSetPostCommand extends HasNotNullMessageCommands{
     public boolean apply(Update update) {
         Message message = update.getMessage();
         return !customerRepository.findById(message.getChatId()).isEmpty()&&
-                !customerRepository.findById(message.getChatId()).get().getState().isEmpty()&&
+                !customerRepository.findById(message.getChatId()).get().getState().isEmpty()&& !message.getText().equals(Text.back_text)&& !message.getText().equals(Text.end_text)&&
                 customerRepository.findById(message.getChatId()).get().getState().equals(Quiz.FIXPRICE.toString());
     }
 }
