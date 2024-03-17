@@ -64,10 +64,11 @@ public class ThiefListHasQueryCommand extends QueryCommands {
 //        }
         List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
         StringBuilder stringBuilder = new StringBuilder();
-
+        int count = 0;
         for (Thief thief : thieves) {
+            count++;
             stringBuilder
-                    .append(thief.getName()).append(", ")
+                    .append(count+") "+ thief.getName()).append(", ")
                     .append(thief.getSurname()).append(", ")
                     .append(thief.getNick()).append("\n");
         }
