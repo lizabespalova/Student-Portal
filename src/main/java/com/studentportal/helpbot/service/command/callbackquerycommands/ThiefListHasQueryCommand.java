@@ -69,7 +69,7 @@ public class ThiefListHasQueryCommand extends QueryCommands {
             stringBuilder.append("Id: ").append(thief.getThiefID()).append(", ")
                     .append("Name: ").append(thief.getName()).append(", ")
                     .append("Age: ").append(thief.getSurname()).append(", ")
-                    .append("Status: ").append(thief.getName()).append("\n");
+                    .append("Nick: ").append(thief.getNick()).append("\n");
         }
 
 
@@ -78,7 +78,7 @@ public class ThiefListHasQueryCommand extends QueryCommands {
         String list = customerActions.getThiefList(resultString);
         SendMessage sendMessage=new SendMessage();
         sendMessage.setChatId(update.getCallbackQuery().getFrom().getId());
-        sendMessage.setText(list);
+        sendMessage.setText(list.replaceAll("null", ""));
 
         InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
