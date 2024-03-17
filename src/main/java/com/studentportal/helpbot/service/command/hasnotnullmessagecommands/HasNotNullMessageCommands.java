@@ -419,7 +419,7 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
             e.printStackTrace();
         }
     }
-    @Transactional
+
     public void getThiefSurname(Message message){
  //       String thiefID="";
 //        try {
