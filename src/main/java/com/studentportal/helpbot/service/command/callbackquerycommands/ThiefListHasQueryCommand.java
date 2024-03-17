@@ -66,10 +66,10 @@ public class ThiefListHasQueryCommand extends QueryCommands {
         StringBuilder stringBuilder = new StringBuilder();
 
         for (Thief thief : thieves) {
-            stringBuilder.append("Id: ").append(thief.getThiefID()).append(", ")
-                    .append("Name: ").append(thief.getName()).append(", ")
-                    .append("Age: ").append(thief.getSurname()).append(", ")
-                    .append("Nick: ").append(thief.getNick()).append("\n");
+            stringBuilder
+                    .append(thief.getName()).append(", ")
+                    .append(thief.getSurname()).append(", ")
+                    .append(thief.getNick()).append("\n");
         }
 
 
