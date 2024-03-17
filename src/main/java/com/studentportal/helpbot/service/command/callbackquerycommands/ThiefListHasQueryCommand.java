@@ -68,8 +68,8 @@ public class ThiefListHasQueryCommand extends QueryCommands {
         for (Thief thief : thieves) {
             count++;
             stringBuilder
-                    .append(count+") "+ thief.getName()).append(", ")
-                    .append(thief.getSurname()).append(", ")
+                    .append(count+") "+ thief.getName()).append(" ")
+                    .append(thief.getSurname()).append(" ")
                     .append(thief.getNick()).append("\n");
         }
 
