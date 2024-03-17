@@ -445,9 +445,15 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
 //            throw new RuntimeException(e);
 //        }
  //       Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
-        Thief thief = thiefRepository.findTopByOrderByIdDesc();
-        thief.setSurname(message.getText());
-        thiefRepository.save(thief);
+        Iterable<Thief> allThieves = thiefRepository.findAll();
+        Thief lastThief = null;
+        for (Thief thief : allThieves) {
+            lastThief = thief; // Переприсваиваем последнего вора на каждой итерации, последний будет записан в lastThief
+        }
+        if (lastThief != null) {
+            lastThief.setSurname(message.getText());
+            thiefRepository.save(lastThief);
+        }
     }
     public void setThiefName(Message message){
 
@@ -464,7 +470,7 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
             e.printStackTrace();
         }
     }
-    @Transactional
+
     public void getThiefName(Message message){
   //      String thiefID="";
 //        try {
@@ -490,9 +496,15 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
 //            throw new RuntimeException(e);
 //        }
       //  Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
-        Thief thief = thiefRepository.findTopByOrderByIdDesc();
-        thief.setName(message.getText());
-        thiefRepository.save(thief);
+        Iterable<Thief> allThieves = thiefRepository.findAll();
+        Thief lastThief = null;
+        for (Thief thief : allThieves) {
+            lastThief = thief; // Переприсваиваем последнего вора на каждой итерации, последний будет записан в lastThief
+        }
+        if (lastThief != null) {
+            lastThief.setName(message.getText());
+            thiefRepository.save(lastThief);
+        }
     }
     public void setThiefNick(Message message){
         SendMessage sendMessage = new SendMessage();
@@ -508,7 +520,6 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
             e.printStackTrace();
         }
     }
-    @Transactional
     public void getThiefNick(Message message){
 //        String thiefID="";
 //        try {
@@ -534,17 +545,24 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
 //            throw new RuntimeException(e);
 //        }
 //        Thief thief = thiefRepository.findById(Long.valueOf(thiefID)).get();
-        Thief thief = thiefRepository.findTopByOrderByIdDesc();
-        thief.setNick(message.getText()+",");
-        thiefRepository.save(thief);
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setText(Text.readyThief);
-        sendMessage.setChatId(message.getChatId());
-        try {
-            // Send the message
-            helpbot.execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
+        Iterable<Thief> allThieves = thiefRepository.findAll();
+        Thief lastThief = null;
+        for (Thief thief : allThieves) {
+            lastThief = thief; // Переприсваиваем последнего вора на каждой итерации, последний будет записан в lastThief
+        }
+        if (lastThief != null) {
+            lastThief.setNick(message.getText() + ",");
+            thiefRepository.save(lastThief);
+            SendMessage sendMessage = new SendMessage();
+            sendMessage.setText(Text.readyThief);
+            sendMessage.setChatId(message.getChatId());
+
+            try {
+                // Send the message
+                helpbot.execute(sendMessage);
+            } catch (TelegramApiException e) {
+                e.printStackTrace();
+            }
         }
         Customer customer = customerRepository.findById(message.getFrom().getId()).get();
         customer.setThiefListState(0);
