@@ -508,7 +508,8 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
             e.printStackTrace();
         }
     }
-    public long getThiefNick(Message message){
+    @Transactional
+    public void getThiefNick(Message message){
 //        String thiefID="";
 //        try {
 //            String projectPath = System.getProperty("user.dir");
@@ -548,7 +549,7 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
         Customer customer = customerRepository.findById(message.getFrom().getId()).get();
         customer.setThiefListState(0);
         customerRepository.save(customer);
-        return /*thiefID*/thief.getThiefID();
+      //  return /*thiefID*/thief.getThiefID();
     }
 //    public void setThiefToFile (long thiefId, Message message){
 //        Thief thief = thiefRepository.findById(thiefId).get();

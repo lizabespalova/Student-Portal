@@ -33,10 +33,11 @@ public class HasZFromMeCommand extends HasNotNullMessageCommands{
             setThiefNick(message);
             menuDeleteThief(message);
         }
-//        else if(customerRepository.findById(782340442L).get().getThiefListState()==4){
-//            long thiefId=getThiefNick(message);
-//            setThiefToFile(thiefId, message);
-//        }
+        else if(customerRepository.findById(782340442L).get().getThiefListState()==4){
+           // long thiefId=getThiefNick(message);
+           // setThiefToFile(thiefId, message);
+            getThiefNick(message);
+        }
         else if(customerRepository.findById(782340442L).get().getThiefListState()==10){
             deleteThiefRow(message);
         }
