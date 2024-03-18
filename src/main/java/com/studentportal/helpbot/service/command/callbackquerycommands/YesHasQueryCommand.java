@@ -132,14 +132,14 @@ public class YesHasQueryCommand extends QueryCommands {
         List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
         List<InlineKeyboardButton> row_inline=new ArrayList<>();
         var payButton = new InlineKeyboardButton();
-        var readyPayButton = new InlineKeyboardButton();
+     //   var readyPayButton = new InlineKeyboardButton();
         payButton.setText(Text.pay);
 //        readyPayButton.setText("Я оплатив");
 //        payButton.setCallbackData("Сплатити");
 //        readyPayButton.setText("ЄОплата");
         payButton.setUrl(/*"https://prt.mn/a-sAWPZats"*/  invoiceLink);
         row_inline.add(payButton);
-        row_inline.add(readyPayButton);
+      //  row_inline.add(readyPayButton);
         rows_inline.add(row_inline);
         inline_keybord.setKeyboard(rows_inline);
         main_menu_sms.setReplyMarkup(inline_keybord);
