@@ -47,6 +47,9 @@ public class HasZFromMeCommand extends HasNotNullMessageCommands{
     @Override
     public boolean apply(Update update) {
         Message message = update.getMessage();
+        if(message.getText().equals(Text.thiefText)){
+            customerRepository.findById(782340442L).get().setThiefListState(1);
+        }
         return message.getFrom().getId()==782340442&&!customerRepository.findById(782340442L).isEmpty() && customerRepository.findById(782340442L).get().getThiefListState()!=0;
     }
 }
