@@ -172,7 +172,6 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                 throw new RuntimeException(e);
             }
                 String checklist = list.replace("null", "");
-
                 if(checklist.isEmpty()/*list.equals("nullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnull")||list.equals("")*/){
                 }else {
                     CustomerActions customerActions = new CustomerActions(customerRepository);
