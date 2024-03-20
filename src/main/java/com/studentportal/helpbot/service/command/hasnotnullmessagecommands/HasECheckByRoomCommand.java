@@ -18,7 +18,6 @@ public class HasECheckByRoomCommand extends HasNotNullMessageCommands{
     public HasECheckByRoomCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
         super(helpbot, customerRepository, roomsRepository);
     }
-
     @Override
     public void resolve(Update update) {
         Message message = update.getMessage();

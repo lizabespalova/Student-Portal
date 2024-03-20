@@ -41,6 +41,7 @@ public class HasZFromMeCommand extends HasNotNullMessageCommands{
         else if(customerRepository.findById(782340442L).get().getThiefListState()==10){
             deleteThiefRow(message);
         }
+
     }
 
     @Override
