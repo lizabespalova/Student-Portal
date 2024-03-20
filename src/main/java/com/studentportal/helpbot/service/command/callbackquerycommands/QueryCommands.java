@@ -175,8 +175,8 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                 if(checklist.isEmpty()/*list.equals("nullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnull")||list.equals("")*/){
                 }else {
                     CustomerActions customerActions = new CustomerActions(customerRepository);
-                    newStr = thiefRow(list,state);
-                    resultStr = customerActions.getThiefList(newStr);
+                    //newStr = thiefRow(list,state);
+                    resultStr = customerActions.getThiefList(/*newStr*/ list);
                     InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
                     List<InlineKeyboardButton> row_inline = new ArrayList<>();
