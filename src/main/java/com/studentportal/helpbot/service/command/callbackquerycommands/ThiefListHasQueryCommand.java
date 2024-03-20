@@ -71,6 +71,7 @@ public class ThiefListHasQueryCommand extends QueryCommands {
                     .append(count+") "+ thief.getName()).append(" ")
                     .append(thief.getSurname()).append(" ")
                     .append(thief.getNick()).append("\n");
+            if(count==10) break;
         }
 
 

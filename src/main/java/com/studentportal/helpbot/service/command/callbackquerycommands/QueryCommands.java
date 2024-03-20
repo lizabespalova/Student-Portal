@@ -1,12 +1,15 @@
 package com.studentportal.helpbot.service.command.callbackquerycommands;
 
 import com.studentportal.helpbot.model.Customer;
+import com.studentportal.helpbot.model.Thief;
 import com.studentportal.helpbot.repository.CustomerRepository;
 import com.studentportal.helpbot.repository.RoomsRepository;
+import com.studentportal.helpbot.repository.ThiefRepository;
 import com.studentportal.helpbot.service.command.Commands;
 import com.studentportal.helpbot.service.consts.Text;
 import com.studentportal.helpbot.service.dopclasses.CustomerActions;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Message;
@@ -22,7 +25,8 @@ import java.util.List;
 
 
 public abstract class QueryCommands extends Commands implements BotHasQueryCommand {
-
+    @Autowired
+    private ThiefRepository thiefRepository;
      QueryCommands(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
          super(helpbot, customerRepository,roomsRepository);
      }
@@ -87,20 +91,29 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
 
             } else {
                 try {
-                    String projectPath = System.getProperty("user.dir");
-                    String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
-                    String absolutePath = projectPath + File.separator + relativePath;
-                    FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
-                    BufferedReader br = new BufferedReader(fileReader);
-                    String mess="";
+//                    String projectPath = System.getProperty("user.dir");
+//                    String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
+//                    String absolutePath = projectPath + File.separator + relativePath;
+//                    FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
+//                    BufferedReader br = new BufferedReader(fileReader);
+                    Thief mess = null;
+                    Thief tenthThief = null;
+                    StringBuilder stringBuilder = new StringBuilder();
+                    int count = 0;
+                    List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
                     for (int i = 0; i < state * 10; i++) {
-                        if(i>= (state-1)* 10)
-                            list += br.readLine();
-                        else mess+=br.readLine();
+                        count++;
+                        if (i >= (state - 1) * 10) {
+                            if (thieves.size() >= i) {
+                                tenthThief = thieves.get(i);
+                                list += stringBuilder
+                                        .append(count + ") " + tenthThief.getName()).append(" ")
+                                        .append(tenthThief.getSurname()).append(" ")
+                                        .append(tenthThief.getNick()).append("\n");
+                            } else mess = tenthThief;
+                        }
                     }
-                } catch (FileNotFoundException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
+                } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
                 CustomerActions customerActions = new CustomerActions(customerRepository);
@@ -138,17 +151,26 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
         } else {
             state += 1;
             try {
-                String projectPath = System.getProperty("user.dir");
-                String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
-                String absolutePath = projectPath + File.separator + relativePath;
-                FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
-                BufferedReader br = new BufferedReader(fileReader);
-                String mess="";
+                Thief mess = null;
+                Thief tenthThief = null;
+                StringBuilder stringBuilder = new StringBuilder();
+                int count = 0;
+                List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
                 for (int i = 0; i < state * 10; i++) {
-                    if(i>= (state-1)* 10)
-                        list += br.readLine();
-                    else mess+=br.readLine();
+                    count++;
+                    if (i >= (state - 1) * 10) {
+                        if (thieves.size() >= i) {
+                            tenthThief = thieves.get(i);
+                            list += stringBuilder
+                                    .append(count + ") " + tenthThief.getName()).append(" ")
+                                    .append(tenthThief.getSurname()).append(" ")
+                                    .append(tenthThief.getNick()).append("\n");
+                        } else mess = tenthThief;
+                    }
                 }
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
                 String checklist = list.replace("null", "");
 
                 if(checklist.isEmpty()/*list.equals("nullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnull")||list.equals("")*/){
@@ -186,11 +208,6 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                         ex.printStackTrace();
                     }
                 }
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
             }
         }
     }
-}
