@@ -104,7 +104,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                     for (int i = 0; i < state * 10; i++) {
                         count++;
                         if (i >= (state - 1) * 10) {
-                            if (thieves.size() >= i) {
+                            if (thieves.size() > i) {
                                 tenthThief = thieves.get(i);
                                 list += stringBuilder
                                         .append(count + ") " + tenthThief.getName()).append(" ")
@@ -158,7 +158,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                 for (int i = 0; i < state * 10; i++) {
                     count++;
                     if (i >= (state - 1) * 10) {
-                        if (thieves.size() >= i) {
+                        if (thieves.size() > i) {
                             tenthThief = thieves.get(i);
                             list += stringBuilder
                                     .append(count + ") " + tenthThief.getName()).append(" ")
