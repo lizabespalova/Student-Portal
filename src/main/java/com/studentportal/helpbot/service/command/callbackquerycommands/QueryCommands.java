@@ -117,8 +117,8 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                     throw new RuntimeException(e);
                 }
                 CustomerActions customerActions = new CustomerActions(customerRepository);
-                newStr = thiefRow(list,state);
-                resultStr = customerActions.getThiefList(newStr);
+                //newStr = thiefRow(list,state);
+                resultStr = customerActions.getThiefList(list/*newStr*/);
                 Customer customer = customerRepository.findById(message.getChatId()).get();
                 customer.setThiefListState(state);
                 customerRepository.save(customer);
