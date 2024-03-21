@@ -140,7 +140,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                     customerRepository.save(customer);
 
                     EditMessageText editMessageText = new EditMessageText();
-                    editMessageText.setText(resultStr);
+                    editMessageText.setText(list);
                     editMessageText.setMessageId(customerRepository.findById(message.getChatId()).get().getMessageThiefID());
                     editMessageText.setChatId(message.getChatId());
                     editMessageText.setReplyMarkup(inline_keybord);
@@ -199,7 +199,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                     customerRepository.save(customer);
 
                     EditMessageText editMessageText = new EditMessageText();
-                    editMessageText.setText(resultStr);
+                    editMessageText.setText(list);
                     editMessageText.setMessageId(customerRepository.findById(message.getChatId()).get().getMessageThiefID());
                     editMessageText.setChatId(message.getChatId());
                     editMessageText.setReplyMarkup(inline_keybord);
