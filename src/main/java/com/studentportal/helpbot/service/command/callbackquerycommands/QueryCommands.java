@@ -111,40 +111,45 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                                         .append(tenthThief.getSurname()).append(" ")
                                         .append(tenthThief.getNick()).append("\n");
                             }
-                        }else ;
+                        } else ;
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
-                CustomerActions customerActions = new CustomerActions(customerRepository);
-                //newStr = thiefRow(list,state);
-                resultStr = customerActions.getThiefList(list/*newStr*/);
-                Customer customer = customerRepository.findById(message.getChatId()).get();
-                customer.setThiefListState(state);
-                customerRepository.save(customer);
-                InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
-                List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
-                List<InlineKeyboardButton> row_inline = new ArrayList<>();
-                var leftButton = new InlineKeyboardButton();
-                leftButton.setText(Text.leftSide);
-                leftButton.setCallbackData("LEFT");
-                var rightButton = new InlineKeyboardButton();
-                rightButton.setText(Text.rightSide);
-                rightButton.setCallbackData("RIGHT");
-                row_inline.add(leftButton);
-                row_inline.add(rightButton);
-                rows_inline.add(row_inline);
-                inline_keybord.setKeyboard(rows_inline);
-                EditMessageText editMessageText = new EditMessageText();
-                editMessageText.setText(resultStr);
-                editMessageText.setMessageId(customerRepository.findById(message.getChatId()).get().getMessageThiefID());
-                editMessageText.setChatId(message.getChatId());
-                editMessageText.setReplyMarkup(inline_keybord);
-                try {
-                    // Send the message
-                    helpbot.execute(editMessageText);
-                } catch (TelegramApiException ex) {
-                    ex.printStackTrace();
+                String checklist = list.replace("null", "");
+                if (checklist.isEmpty()/*list.equals("nullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnull")||list.equals("")*/) {
+                } else {
+                    CustomerActions customerActions = new CustomerActions(customerRepository);
+                    //newStr = thiefRow(list,state);
+                    resultStr = customerActions.getThiefList(/*newStr*/ list);
+                    InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
+                    List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
+                    List<InlineKeyboardButton> row_inline = new ArrayList<>();
+                    var leftButton = new InlineKeyboardButton();
+                    leftButton.setText(Text.leftSide);
+                    leftButton.setCallbackData("LEFT");
+                    var rightButton = new InlineKeyboardButton();
+                    rightButton.setText(Text.rightSide);
+                    rightButton.setCallbackData("RIGHT");
+                    row_inline.add(leftButton);
+                    row_inline.add(rightButton);
+                    rows_inline.add(row_inline);
+                    inline_keybord.setKeyboard(rows_inline);
+                    Customer customer = customerRepository.findById(message.getChatId()).get();
+                    customer.setThiefListState(state);
+                    customerRepository.save(customer);
+
+                    EditMessageText editMessageText = new EditMessageText();
+                    editMessageText.setText(resultStr);
+                    editMessageText.setMessageId(customerRepository.findById(message.getChatId()).get().getMessageThiefID());
+                    editMessageText.setChatId(message.getChatId());
+                    editMessageText.setReplyMarkup(inline_keybord);
+                    try {
+                        // Send the message
+                        helpbot.execute(editMessageText);
+                    } catch (TelegramApiException ex) {
+                        ex.printStackTrace();
+                    }
                 }
             }
 
