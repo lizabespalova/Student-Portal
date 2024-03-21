@@ -96,7 +96,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
 //                    String absolutePath = projectPath + File.separator + relativePath;
 //                    FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
 //                    BufferedReader br = new BufferedReader(fileReader);
-                    Thief mess = null;
+
                     Thief tenthThief = null;
                     StringBuilder stringBuilder = new StringBuilder();
                     int count = 0;
@@ -111,7 +111,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                                         .append(tenthThief.getSurname()).append(" ")
                                         .append(tenthThief.getNick()).append("\n");
                             }
-                        }else mess = tenthThief;
+                        }else ;
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -151,7 +151,6 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
         } else {
             state += 1;
             try {
-                Thief mess = null;
                 Thief tenthThief = null;
                 StringBuilder stringBuilder = new StringBuilder();
                 int count = 0;
@@ -166,12 +165,12 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                                     .append(tenthThief.getSurname()).append(" ")
                                     .append(tenthThief.getNick()).append("\n");
                         }
-                    }else mess = tenthThief;
+                    }else ;
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
             }
-                String checklist = list.replace("null", "");
+            String checklist = list.replace("null", "");
                 if(checklist.isEmpty()/*list.equals("nullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnullnull")||list.equals("")*/){
                 }else {
                     CustomerActions customerActions = new CustomerActions(customerRepository);
