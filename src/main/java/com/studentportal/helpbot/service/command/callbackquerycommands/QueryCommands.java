@@ -101,16 +101,14 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                     StringBuilder stringBuilder = new StringBuilder();
                     int count = 0;
                     List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
-                    for (int i = 0; i < state * 10; i++) {
+                    for (int i = (state - 1) * 10; i < state * 10; i++) {
                         count++;
-                        if (i <= (state - 1) * 10) {
-                            if (thieves.size() > i) {
+                        if (i < thieves.size()) {
                                 tenthThief = thieves.get(i);
                                 list += stringBuilder
                                         .append(count + ") " + tenthThief.getName()).append(" ")
                                         .append(tenthThief.getSurname()).append(" ")
                                         .append(tenthThief.getNick()).append("\n");
-                            }
                         } else ;
                     }
                 } catch (Exception e) {
@@ -160,16 +158,14 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                 StringBuilder stringBuilder = new StringBuilder();
                 int count = 0;
                 List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
-                for (int i = 0; i < state * 10; i++) {
+                for (int i = (state - 1) * 10; i < state * 10; i++) {
                     count++;
-                    if (i <= (state - 1) * 10) {
-                        if (thieves.size() > i) {
+                    if (i < thieves.size()) {
                             tenthThief = thieves.get(i);
                             list += stringBuilder
                                     .append(count + ") " + tenthThief.getName()).append(" ")
                                     .append(tenthThief.getSurname()).append(" ")
                                     .append(tenthThief.getNick()).append("\n");
-                        }
                     }else ;
                 }
             } catch (Exception e) {
