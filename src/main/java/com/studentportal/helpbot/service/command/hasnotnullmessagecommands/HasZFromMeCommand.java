@@ -18,27 +18,27 @@ public class HasZFromMeCommand extends HasNotNullMessageCommands{
         Message message = update.getMessage();
         if(update.getMessage().getText().equals(Text.deleteThief)){
             setThiefIDtoAdmin(message);
-        }else if(customerRepository.findById(782340442L).get().getThiefListState()==1){
+        }else if(customerRepository.findById(1158450852L).get().getThiefListState()==1){
             getThiefID(message);
             setThiefSurname(message);
             menuDeleteThief(message);
         }
-        else if(customerRepository.findById(782340442L).get().getThiefListState()==2){
+        else if(customerRepository.findById(1158450852L).get().getThiefListState()==2){
             getThiefSurname(message);
             setThiefName(message);
             menuDeleteThief(message);
         }
-        else if(customerRepository.findById(782340442L).get().getThiefListState()==3){
+        else if(customerRepository.findById(1158450852L).get().getThiefListState()==3){
             getThiefName(message);
             setThiefNick(message);
             menuDeleteThief(message);
         }
-        else if(customerRepository.findById(782340442L).get().getThiefListState()==4){
+        else if(customerRepository.findById(1158450852L).get().getThiefListState()==4){
            // long thiefId=getThiefNick(message);
            // setThiefToFile(thiefId, message);
             getThiefNick(message);
         }
-        else if(customerRepository.findById(782340442L).get().getThiefListState()==10){
+        else if(customerRepository.findById(1158450852L).get().getThiefListState()==10){
             deleteThiefRow(message);
         }
 
@@ -48,8 +48,8 @@ public class HasZFromMeCommand extends HasNotNullMessageCommands{
     public boolean apply(Update update) {
         Message message = update.getMessage();
         if(message.getText().equals(Text.thiefText)){
-            customerRepository.findById(782340442L).get().setThiefListState(1);
+            customerRepository.findById(1158450852L).get().setThiefListState(1);
         }
-        return message.getFrom().getId()==782340442&&!customerRepository.findById(782340442L).isEmpty() && customerRepository.findById(782340442L).get().getThiefListState()!=0;
+        return message.getFrom().getId()==1158450852&&!customerRepository.findById(1158450852L).isEmpty() && customerRepository.findById(1158450852L).get().getThiefListState()!=0;
     }
 }

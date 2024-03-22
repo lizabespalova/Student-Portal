@@ -69,7 +69,7 @@ public class Text {
     public static final String thiefListToAppand = "Список шахраїв: ";
     public static final String leftSide = EmojiParser.parseToUnicode(":arrow_left:");
     public static final String rightSide = EmojiParser.parseToUnicode(":arrow_right:");
-    public static final String setMe = EmojiParser.parseToUnicode("Для того, щоб додати людину до шахрайника, вам потрібно спочатку це довести. Напишіть адміністрації, для доведення шахрайства (фото, скріни, голосові повідомлення та ін.)\nАдміністрація: @lizabespalova");
+    public static final String setMe = EmojiParser.parseToUnicode("Для того, щоб додати людину до шахрайника, вам потрібно спочатку це довести. Напишіть адміністрації, для доведення шахрайства (фото, скріни, голосові повідомлення та ін.)\nАдміністрація: @vedmedyk_admin");
     public static final String thiefCheck = EmojiParser.parseToUnicode("Для того, щоб перевірити чи є ваш виконавець шахраєм, просто перешліть його будь-яке смс сюди.");
     public static final String thiefExists = EmojiParser.parseToUnicode("На жаль, ця людина є у списках шахраїв. Не рекомендовано з нею продовжувати працю.");
     public static final String thiefDoesntExists = EmojiParser.parseToUnicode("Людина раніше не була схоплена за шахрайство");

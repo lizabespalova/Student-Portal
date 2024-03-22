@@ -36,7 +36,7 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
         super(helpbot, customerRepository, roomsRepository);
     }
     public void setThiefList(Update update){
-        if(update.getMessage().getChatId()==782340442){
+        if(update.getMessage().getChatId()==1158450852){
             SendMessage sendMessage = new SendMessage();
             sendMessage.setChatId(update.getMessage().getChatId());
             sendMessage.setText(Text.thiefId);
@@ -360,7 +360,7 @@ public abstract class HasNotNullMessageCommands extends Commands implements BotH
                 e.printStackTrace();
             }
         }
-        Customer customer = customerRepository.findById(782340442L).get();
+        Customer customer = customerRepository.findById(1158450852L).get();
         customer.setThiefListState(0);
         customerRepository.save(customer);
         //removeLineFromFile(message);
