@@ -103,7 +103,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                     List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
                     for (int i = 0; i < state * 10; i++) {
                         count++;
-                        if (i >= (state - 1) * 10) {
+                        if (i <= (state - 1) * 10) {
                             if (thieves.size() > i) {
                                 tenthThief = thieves.get(i);
                                 list += stringBuilder
@@ -140,7 +140,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                     customerRepository.save(customer);
 
                     EditMessageText editMessageText = new EditMessageText();
-                    editMessageText.setText(list);
+                    editMessageText.setText(resultStr);
                     editMessageText.setMessageId(customerRepository.findById(message.getChatId()).get().getMessageThiefID());
                     editMessageText.setChatId(message.getChatId());
                     editMessageText.setReplyMarkup(inline_keybord);
@@ -162,7 +162,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                 List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
                 for (int i = 0; i < state * 10; i++) {
                     count++;
-                    if (i >= (state - 1) * 10) {
+                    if (i <= (state - 1) * 10) {
                         if (thieves.size() > i) {
                             tenthThief = thieves.get(i);
                             list += stringBuilder
@@ -199,7 +199,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                     customerRepository.save(customer);
 
                     EditMessageText editMessageText = new EditMessageText();
-                    editMessageText.setText(list);
+                    editMessageText.setText(resultStr);
                     editMessageText.setMessageId(customerRepository.findById(message.getChatId()).get().getMessageThiefID());
                     editMessageText.setChatId(message.getChatId());
                     editMessageText.setReplyMarkup(inline_keybord);
