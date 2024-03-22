@@ -106,9 +106,9 @@ public class CustomerActions {
         sb.append("Адміністрація:");
         sb.append("\n");
                 sb.append("<a href= \"");
-                sb.append("@lizabespalova");
+                sb.append("@vedmedyk_admin");
                 sb.append("\">");
-                sb.append("@lizabespalova\n");
+                sb.append("@vedmedyk_admin\n");
                 sb.append("</a>");
         return sb;
     }

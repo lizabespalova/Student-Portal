@@ -86,6 +86,8 @@ public class Helpbot extends TelegramLongPollingBot {
         listofCommands.add(new BotCommand("/info", text));
         text = EmojiParser.parseToUnicode(":moneybag:" + " " + "Тарифи");
         listofCommands.add(new BotCommand("/tariffs", text));
+        text = EmojiParser.parseToUnicode(":closed_book:" + " " + "Опис");
+        listofCommands.add(new BotCommand("/description", text));
         try {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
@@ -155,6 +157,16 @@ public class Helpbot extends TelegramLongPollingBot {
                                 "\n" +
                                 "Гроші на рахунок виконавця буде відправлено протягом 3 робочих днів з відрахуванням комісії");
 
+                        try {
+                            // Send the message
+                            execute(tariff_sms);
+                        } catch (TelegramApiException e) {
+                            e.printStackTrace();
+                        }
+                    } case "/description":{
+                        SendMessage tariff_sms = new SendMessage();
+                        tariff_sms.setChatId(message.getChatId());
+                        tariff_sms.setText("Бот бере відсоток за отримання грошей. За цей відсоток вам гарантується безпека. \n Основна задача бота – надання безпеки між 2 сторонами спілки. Тут студенти або школярі, яким потрібна допомога з завданням можуть зі спокоєм робити свій запит та оплачувати роботу виконавця. Тепер вам більш не потрібно вирішувати, хто «перший». Користувач може спокійно відправляти гроші боту і тільки після отримання рішення, гроші переведуться виконавцю. Таким чином, користувач не загубить гроші. Виконавець також може не перейматися за оплату, адже гроші вже будуть в боті. Таким чином гарантується безпека 2 сторонам спілки.");
                         try {
                             // Send the message
                             execute(tariff_sms);
@@ -275,7 +287,7 @@ public class Helpbot extends TelegramLongPollingBot {
     public void help_button(String chatId) {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
-        text = EmojiParser.parseToUnicode("Якщо виникли питання звертайтесь до адміністратора:" + ":rose:" + "\n\n\n" + "@lizabespalova"+ "\n\n\n" + "Або за поштою: vedmedykportal@gmail.com");
+        text = EmojiParser.parseToUnicode("Якщо виникли питання звертайтесь до адміністратора:" + ":rose:" + "\n\n\n" + "@vedmedyk_admin"+ "\n\n\n" + "Або за поштою: vedmedykportal@gmail.com");
         sendMessage.setText(text);
         try {
             // Send the message
@@ -326,7 +338,7 @@ public class Helpbot extends TelegramLongPollingBot {
         }
     }
     public void set_contract(String chatId) {
-        String filePath = "src/main/java/com/studentportal/helpbot/service/command/files/Oferta.docx";
+        String filePath = "src/main/java/com/studentportal/helpbot/service/command/files/Oferta.pdf";
         InputFile inputFile = new InputFile(new File(filePath));
         SendDocument contract_sms = new SendDocument();
         contract_sms.setChatId(chatId);
