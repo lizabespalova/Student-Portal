@@ -83,7 +83,6 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
     public void turnList(boolean flag, Message message) {
         int state = customerRepository.findById(message.getChatId()).get().getThiefListState();
         String list = "";
-        String newStr = "";
         String resultStr = "";
         if (flag) {
             state -= 1;
@@ -91,24 +90,20 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
 
             } else {
                 try {
-//                    String projectPath = System.getProperty("user.dir");
-//                    String relativePath = "Student-Portal/src/main/java/com/studentportal/StudentPortal/Helpbot/service/command/files/ThiefDataTable";
-//                    String absolutePath = projectPath + File.separator + relativePath;
-//                    FileReader fileReader = new FileReader(absolutePath, StandardCharsets.UTF_8);
-//                    BufferedReader br = new BufferedReader(fileReader);
-
                     Thief tenthThief = null;
                     StringBuilder stringBuilder = new StringBuilder();
                     int count = 0;
                     List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
-                    for (int i = (state - 1) * 10; i < state * 10; i++) {
+                    for (int i = 0; i < state * 10; i++) {
                         count++;
-                        if (i < thieves.size()) {
+                        if (i >= (state - 1) * 10) {
+                            if (thieves.size() > i) {
                                 tenthThief = thieves.get(i);
                                 list += stringBuilder
                                         .append(count + ") " + tenthThief.getName()).append(" ")
                                         .append(tenthThief.getSurname()).append(" ")
                                         .append(tenthThief.getNick()).append("\n");
+                            }
                         } else ;
                     }
                 } catch (Exception e) {
@@ -158,14 +153,16 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                 StringBuilder stringBuilder = new StringBuilder();
                 int count = 0;
                 List<Thief> thieves = (List<Thief>) thiefRepository.findAll();
-                for (int i = (state - 1) * 10; i < state * 10; i++) {
+                for (int i = 0; i < state * 10; i++) {
                     count++;
-                    if (i < thieves.size()) {
+                    if (i >= (state - 1) * 10) {
+                        if (thieves.size() > i) {
                             tenthThief = thieves.get(i);
                             list += stringBuilder
                                     .append(count + ") " + tenthThief.getName()).append(" ")
                                     .append(tenthThief.getSurname()).append(" ")
                                     .append(tenthThief.getNick()).append("\n");
+                        }
                     }else ;
                 }
             } catch (Exception e) {
