@@ -104,7 +104,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                                         .append(tenthThief.getSurname()).append(" ")
                                         .append(tenthThief.getNick()).append("\n");
                             }
-                        } else ;
+                        }
                     }
                 } catch (Exception e) {
                     throw new RuntimeException(e);
@@ -163,7 +163,7 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                                     .append(tenthThief.getSurname()).append(" ")
                                     .append(tenthThief.getNick()).append("\n");
                         }
-                    }else ;
+                    }
                 }
             } catch (Exception e) {
                 throw new RuntimeException(e);
