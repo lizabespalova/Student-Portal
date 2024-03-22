@@ -20,8 +20,7 @@ import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 
 public abstract class QueryCommands extends Commands implements BotHasQueryCommand {
@@ -114,7 +113,8 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                 } else {
                     CustomerActions customerActions = new CustomerActions(customerRepository);
                     //newStr = thiefRow(list,state);
-                    resultStr = customerActions.getThiefList(/*newStr*/ list);
+                    Set<String> uniqueStrings = new LinkedHashSet<>(Arrays.asList(list.split(",\\n?")));
+                    resultStr =  String.join(",\n", uniqueStrings);
                     InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
                     List<InlineKeyboardButton> row_inline = new ArrayList<>();
@@ -173,7 +173,8 @@ public abstract class QueryCommands extends Commands implements BotHasQueryComma
                 }else {
                     CustomerActions customerActions = new CustomerActions(customerRepository);
                     //newStr = thiefRow(list,state);
-                    resultStr = customerActions.getThiefList(/*newStr*/ list);
+                    Set<String> uniqueStrings = new LinkedHashSet<>(Arrays.asList(list.split(",\\n?")));
+                    resultStr =  String.join(",\n", uniqueStrings);
                     InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
                     List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
                     List<InlineKeyboardButton> row_inline = new ArrayList<>();
