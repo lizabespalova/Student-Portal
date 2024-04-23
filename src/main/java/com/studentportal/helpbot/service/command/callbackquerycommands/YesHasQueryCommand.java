@@ -25,6 +25,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.*;
 
+
 @Component
 public class YesHasQueryCommand extends QueryCommands {
     @Autowired
