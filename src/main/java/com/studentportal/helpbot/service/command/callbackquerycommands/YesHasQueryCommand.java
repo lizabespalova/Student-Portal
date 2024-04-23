@@ -64,6 +64,7 @@ public class YesHasQueryCommand extends QueryCommands {
         }
     }
 
+
     public void sendPayment(Update update) throws TelegramApiException {
         CustomerActions customerActions = new CustomerActions(customerRepository);
         int price = 0;
