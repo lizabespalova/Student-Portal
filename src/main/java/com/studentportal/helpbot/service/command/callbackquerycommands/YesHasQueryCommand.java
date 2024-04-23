@@ -33,6 +33,7 @@ public class YesHasQueryCommand extends QueryCommands {
         super(helpbot, customerRepository, roomsRepository);
     }
 
+
     @Override
     public void resolve(Update update) {
 
