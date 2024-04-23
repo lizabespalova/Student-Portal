@@ -8,6 +8,7 @@ import com.studentportal.helpbot.repository.PurchaseRepository;
 import com.studentportal.helpbot.repository.RoomsRepository;
 import com.studentportal.helpbot.service.consts.Text;
 import com.studentportal.helpbot.service.dopclasses.CustomerActions;
+import com.studentportal.helpbot.service.dopclasses.ParameterStringBuilder;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,11 +21,15 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
+
 @Component
 public class YesHasQueryCommand extends QueryCommands {
     @Autowired
@@ -119,10 +124,55 @@ public class YesHasQueryCommand extends QueryCommands {
             }
         }
         int finishPrice = customerActions.finish_price_for_customer(price);
-        Rooms room = roomsRepository.findById(roomId).get();
-        CreateInvoiceLink createInvoiceLink = new CreateInvoiceLink(Text.title, Text.formDescription, room.getPayload(), helpbot.getBotTokenPay(), "UAH",
-         List.of(new LabeledPrice("Вартість", finishPrice * 100)));
-        String invoiceLink = helpbot.execute(createInvoiceLink);
+//        Rooms room = roomsRepository.findById(roomId).get();
+//        CreateInvoiceLink createInvoiceLink = new CreateInvoiceLink(Text.title, Text.formDescription, room.getPayload(), helpbot.getBotTokenPay(), "UAH",
+//         List.of(new LabeledPrice("Вартість", finishPrice * 100)));
+        String invoiceLink = "";/*helpbot.execute(createInvoiceLink);*/
+        String public_key = helpbot.getBotTokenPay();
+        String secret_key = helpbot.getBotSecretTokenPay();
+        String url = "https://merchant.betatransfer.io/api/payment?token=" + public_key;
+        try {
+            URL obj = new URL(url);
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+            con.setRequestMethod("POST");
+
+            // Set headers
+            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+
+            // Construct data
+            Map<String, String> data = new HashMap<>();
+            data.put("amount", String.valueOf(finishPrice));
+            data.put("currency", "UAH");
+            data.put("orderId", payLoad);
+            String sign = md5(dataToString(data) + secret_key);
+            data.put("sign", sign);
+
+            // Send post request
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(ParameterStringBuilder.getParamsString(data));
+            wr.flush();
+            wr.close();
+
+            int responseCode = con.getResponseCode();
+            System.out.println("Response Code : " + responseCode);
+
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Print result
+            invoiceLink = response.toString();
+            System.out.println(response.toString());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
         //change
 
         SendMessage main_menu_sms = new SendMessage();
@@ -151,7 +201,29 @@ public class YesHasQueryCommand extends QueryCommands {
             e.printStackTrace();
         }
     }
+    public static String dataToString(Map<String, String> data) {
+        StringBuilder result = new StringBuilder();
+        for (Map.Entry<String, String> entry : data.entrySet()) {
+            result.append(entry.getKey()).append(entry.getValue());
+        }
+        return result.toString();
+    }
 
+    // Calculate MD5 hash
+    public static String md5(String input) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(input.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public boolean apply(Update update) {
         if(update.hasCallbackQuery()) {

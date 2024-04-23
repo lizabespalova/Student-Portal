@@ -22,4 +22,7 @@ public class HelpbotConfig {
 
     @Value("${telegram.help.bot.tokenpay}")
     private  String tokenPay;
+
+    @Value("${telegram.help.bot.secrettokenpay}")
+    private  String SecretTokenPay;
 }
