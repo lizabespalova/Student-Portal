@@ -145,14 +145,36 @@ public class YesHasQueryCommand extends QueryCommands {
 
             HttpHeaders headers = new HttpHeaders();
             headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-
+            SendMessage main_menu_smss = new SendMessage();
+            main_menu_smss.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
+            main_menu_smss.setText("До  Create request entity "+ invoiceLink);
+            try {
+                Message message = helpbot.execute(main_menu_smss);
+            }catch(TelegramApiException e){
+                e.printStackTrace();
+            }
             // Create request entity
             HttpEntity<String> requestEntity = new HttpEntity<>(dataToString(data), headers);
-
+            SendMessage main_menu_sms1 = new SendMessage();
+            main_menu_sms1.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
+            main_menu_sms1.setText("После  Create request entity "+ invoiceLink);
+            try {
+                Message message = helpbot.execute(main_menu_sms1);
+            }catch(TelegramApiException e){
+                e.printStackTrace();
+            }
             // Send request
             RestTemplate restTemplate = new RestTemplate();
             ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
             invoiceLink = response.getBody();
+            SendMessage main_menu_sms = new SendMessage();
+            main_menu_sms.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
+            main_menu_sms.setText("Ссылка  "+ invoiceLink);
+            try {
+                Message message = helpbot.execute(main_menu_sms);
+            }catch(TelegramApiException e){
+                e.printStackTrace();
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
