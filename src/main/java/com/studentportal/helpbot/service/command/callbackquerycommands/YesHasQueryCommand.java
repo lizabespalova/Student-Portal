@@ -134,9 +134,9 @@ public class YesHasQueryCommand extends QueryCommands {
         String secret_key = helpbot.getBotSecretTokenPay();
         String url = "https://merchant.betatransfer.io/api/payment?token=" + public_key;
         Map<String, String> formData = new HashMap<>();
-        formData.put("amount", "1500.00");
-        formData.put("currency", "USD");
-        formData.put("orderId", "test_12345");
+        formData.put("amount", String.valueOf(finishPrice));
+        formData.put("currency", "UAN");
+        formData.put("orderId", payLoad);
         formData.put("paymentSystem", "Card");
         formData.put("urlResult", "http://site.com/urlResult");
         formData.put("urlSuccess", "http://site.com/urlSuccess");
