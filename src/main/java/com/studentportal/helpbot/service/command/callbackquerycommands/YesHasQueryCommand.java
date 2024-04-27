@@ -129,69 +129,67 @@ public class YesHasQueryCommand extends QueryCommands {
 //        CreateInvoiceLink createInvoiceLink = new CreateInvoiceLink(Text.title, Text.formDescription, room.getPayload(), helpbot.getBotTokenPay(), "UAH",
 //         List.of(new LabeledPrice("Вартість", finishPrice * 100)));
         String invoiceLink = "";/*helpbot.execute(createInvoiceLink);*/
+        try{
         String public_key = helpbot.getBotTokenPay();
         String secret_key = helpbot.getBotSecretTokenPay();
         String url = "https://merchant.betatransfer.io/api/payment?token=" + public_key;
-        try {
+        Map<String, String> formData = new HashMap<>();
+        formData.put("amount", "1500.00");
+        formData.put("currency", "USD");
+        formData.put("orderId", "test_12345");
+        formData.put("paymentSystem", "Card");
+        formData.put("urlResult", "http://site.com/urlResult");
+        formData.put("urlSuccess", "http://site.com/urlSuccess");
+        formData.put("urlFail", "http://site.com/urlFail");
+        formData.put("fullCallback", "1");
 
-            // Construct data
-            Map<String, String> data = new HashMap<>();
-            data.put("amount", String.valueOf(finishPrice));
-            data.put("currency", "UAH");
-            data.put("orderId", payLoad);
-            String sign = md5(dataToString(data) + secret_key);
-            data.put("sign", sign);
-            StringBuilder postData = new StringBuilder();
-            for (Map.Entry<String, String> entry : data.entrySet()) {
-                if (postData.length() != 0) postData.append('&');
-                postData.append(entry.getKey());
-                postData.append('=');
-                postData.append(entry.getValue());
-            }
+        StringBuilder signData = new StringBuilder();
+        for (String value : formData.values()) {
+            signData.append(value);
+        }
+        signData.append(secret_key);
+        String sign = md5(signData.toString());
 
-            // Создаем объект URL и открываем соединение
-            URL obj = new URL(url);
-            SendMessage main_menu_sms1 = new SendMessage();
-            main_menu_sms1.setText("155  строка  ");
-            try {
-                helpbot.execute(main_menu_sms1);
-            }catch(TelegramApiException e){
-                e.printStackTrace();
-            }
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+        formData.put("sign", sign);
 
-            // Устанавливаем метод запроса
-            con.setRequestMethod("POST");
-
-            // Устанавливаем параметры запроса
-            con.setDoOutput(true);
-            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-            wr.writeBytes(postData.toString());
-            wr.flush();
-            wr.close();
-
-            // Получаем ответ
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String inputLine;
-            StringBuffer response = new StringBuffer();
-
-            while ((inputLine = in.readLine()) != null) {
-                response.append(inputLine);
-            }
-            in.close();
-
-            // Выводим ответ
-            SendMessage main_menu_sms = new SendMessage();
-            main_menu_sms.setText("Ссылка  "+ response.toString());
-            try {
-                helpbot.execute(main_menu_sms);
-            }catch(TelegramApiException e){
-                e.printStackTrace();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
+        StringBuilder postData = new StringBuilder();
+        for (Map.Entry<String, String> entry : formData.entrySet()) {
+            if (postData.length() != 0) postData.append('&');
+            postData.append(entry.getKey());
+            postData.append('=');
+            postData.append(entry.getValue());
         }
 
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("POST");
+
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(postData.toString());
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+            SendMessage main_menu_sms = new SendMessage();
+            main_menu_sms.setText("Response: " + response.toString());
+            try {
+             helpbot.execute(main_menu_sms);
+            }catch(TelegramApiException e){
+                e.printStackTrace();
+            }
+        // Распарсите ответ JSON и извлеките urlPayment
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
         //change
 
         SendMessage main_menu_sms = new SendMessage();
