@@ -181,6 +181,7 @@ public class YesHasQueryCommand extends QueryCommands {
         in.close();
             SendMessage main_menu_sms = new SendMessage();
             main_menu_sms.setText("Response: " + response.toString());
+            main_menu_sms.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
             try {
              helpbot.execute(main_menu_sms);
             }catch(TelegramApiException e){
