@@ -3,6 +3,9 @@ package com.studentportal.helpbot.service.command.callbackquerycommands;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 import com.studentportal.helpbot.model.*;
@@ -130,12 +133,6 @@ public class YesHasQueryCommand extends QueryCommands {
         String secret_key = helpbot.getBotSecretTokenPay();
         String url = "https://merchant.betatransfer.io/api/payment?token=" + public_key;
         try {
-            URL obj = new URL(url);
-            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-            con.setRequestMethod("POST");
-
-            // Set headers
-            con.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
 
             // Construct data
             Map<String, String> data = new HashMap<>();
@@ -144,36 +141,50 @@ public class YesHasQueryCommand extends QueryCommands {
             data.put("orderId", payLoad);
             String sign = md5(dataToString(data) + secret_key);
             data.put("sign", sign);
+            StringBuilder postData = new StringBuilder();
+            for (Map.Entry<String, String> entry : data.entrySet()) {
+                if (postData.length() != 0) postData.append('&');
+                postData.append(entry.getKey());
+                postData.append('=');
+                postData.append(entry.getValue());
+            }
 
-            HttpHeaders headers = new HttpHeaders();
-            headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
-            SendMessage main_menu_smss = new SendMessage();
-            main_menu_smss.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
-            main_menu_smss.setText("До  Create request entity "+ invoiceLink);
-            try {
-                Message message = helpbot.execute(main_menu_smss);
-            }catch(TelegramApiException e){
-                e.printStackTrace();
-            }
-            // Create request entity
-            HttpEntity<String> requestEntity = new HttpEntity<>(dataToString(data), headers);
+            // Создаем объект URL и открываем соединение
+            URL obj = new URL(url);
             SendMessage main_menu_sms1 = new SendMessage();
-            main_menu_sms1.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
-            main_menu_sms1.setText("После  Create request entity "+ invoiceLink);
+            main_menu_sms1.setText("155  строка  ");
             try {
-                Message message = helpbot.execute(main_menu_sms1);
+                helpbot.execute(main_menu_sms1);
             }catch(TelegramApiException e){
                 e.printStackTrace();
             }
-            // Send request
-            RestTemplate restTemplate = new RestTemplate();
-            ResponseEntity<String> response = restTemplate.exchange(url, HttpMethod.POST, requestEntity, String.class);
-            invoiceLink = response.getBody();
+            HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+            // Устанавливаем метод запроса
+            con.setRequestMethod("POST");
+
+            // Устанавливаем параметры запроса
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(postData.toString());
+            wr.flush();
+            wr.close();
+
+            // Получаем ответ
+            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+            String inputLine;
+            StringBuffer response = new StringBuffer();
+
+            while ((inputLine = in.readLine()) != null) {
+                response.append(inputLine);
+            }
+            in.close();
+
+            // Выводим ответ
             SendMessage main_menu_sms = new SendMessage();
-            main_menu_sms.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
-            main_menu_sms.setText("Ссылка  "+ invoiceLink);
+            main_menu_sms.setText("Ссылка  "+ response.toString());
             try {
-                Message message = helpbot.execute(main_menu_sms);
+                helpbot.execute(main_menu_sms);
             }catch(TelegramApiException e){
                 e.printStackTrace();
             }
