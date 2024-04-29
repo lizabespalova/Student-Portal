@@ -12,10 +12,10 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.IOException;
 @Component
-public class HasECheckByRoomCommand extends HasNotNullMessageCommands{
+public class HasCheckByRoomCommand extends HasNotNullMessageCommands{
     @Autowired
     private PurchaseRepository purchaseRepository;
-    public HasECheckByRoomCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
+    public HasCheckByRoomCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
         super(helpbot, customerRepository, roomsRepository);
     }
     @Override
