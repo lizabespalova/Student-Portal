@@ -58,10 +58,10 @@ public class HasECheckByRoomCommand extends HasNotNullMessageCommands{
     public boolean apply(Update update) {
         Message message = update.getMessage();
         if(getRoomNumb(message)==0){
-            return false;
+            return true/*false*/;
         } else if (roomsRepository.findById(getRoomNumb(message)).get().getStateInChat() == null) {
-            return false;
-        } else return !roomsRepository.findById(getRoomNumb(message)).isEmpty()&&roomsRepository.findById(getRoomNumb(message)).get().getFollowing()==0||roomsRepository.findById(getRoomNumb(message)).get().getFollowing()==2;
+            return true/*false*/;
+        } else return true/*!roomsRepository.findById(getRoomNumb(message)).isEmpty()&&roomsRepository.findById(getRoomNumb(message)).get().getFollowing()==0||roomsRepository.findById(getRoomNumb(message)).get().getFollowing()==2*/;
     }
     public int getRoomNumb(Message message){
         int roomNumb = 0;
