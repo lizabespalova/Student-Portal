@@ -37,6 +37,7 @@ public class HasECheckByRoomCommand extends HasNotNullMessageCommands{
                     throw new RuntimeException(e);
                 }
             }
+
             else if(user_sms.matches("^-?\\d+$" )/*&& roomsRepository.findById(getRoomNumb(message)).get().getStateInChat()!=1*/){
                 for(int i=0; i<roomsRepository.count(); i++){
                     if(roomsRepository.findById(i+1).get().getRoomID().equals(message.getChat().getId())&&roomsRepository.findById(i+1).get().getFollowing()==2){
