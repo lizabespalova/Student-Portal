@@ -1,7 +1,13 @@
 package com.studentportal.helpbot.service.command.callbackquerycommands;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.http.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.BufferedReader;
+import java.io.DataOutputStream;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import com.studentportal.helpbot.model.*;
 import com.studentportal.helpbot.repository.CustomerRepository;
 import com.studentportal.helpbot.repository.PurchaseRepository;
@@ -11,20 +17,18 @@ import com.studentportal.helpbot.service.dopclasses.CustomerActions;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.invoices.CreateInvoiceLink;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.payments.LabeledPrice;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import java.nio.charset.StandardCharsets;
-import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.*;
+
+
 @Component
 public class YesHasQueryCommand extends QueryCommands {
     @Autowired
@@ -32,6 +36,7 @@ public class YesHasQueryCommand extends QueryCommands {
     public YesHasQueryCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
         super(helpbot, customerRepository, roomsRepository);
     }
+
 
     @Override
     public void resolve(Update update) {
@@ -63,6 +68,7 @@ public class YesHasQueryCommand extends QueryCommands {
             blockActionsWhilePayed(update);
         }
     }
+
     public void sendPayment(Update update) throws TelegramApiException {
         CustomerActions customerActions = new CustomerActions(customerRepository);
         int price = 0;
@@ -119,10 +125,72 @@ public class YesHasQueryCommand extends QueryCommands {
             }
         }
         int finishPrice = customerActions.finish_price_for_customer(price);
-        Rooms room = roomsRepository.findById(roomId).get();
-        CreateInvoiceLink createInvoiceLink = new CreateInvoiceLink(Text.title, Text.formDescription, room.getPayload(), helpbot.getBotTokenPay(), "UAH",
-         List.of(new LabeledPrice("Вартість", finishPrice * 100)));
-        String invoiceLink = helpbot.execute(createInvoiceLink);
+//        Rooms room = roomsRepository.findById(roomId).get();
+//        CreateInvoiceLink createInvoiceLink = new CreateInvoiceLink(Text.title, Text.formDescription, room.getPayload(), helpbot.getBotTokenPay(), "UAH",
+//         List.of(new LabeledPrice("Вартість", finishPrice * 100)));
+        String invoiceLink = "";/*helpbot.execute(createInvoiceLink);*/
+        try{
+        String public_key = helpbot.getBotTokenPay();
+        String secret_key = helpbot.getBotSecretTokenPay();
+        String url = "https://merchant.betatransfer.io/api/payment?token=" + public_key;
+        Map<String, String> formData = new HashMap<>();
+        formData.put("amount", String.valueOf(finishPrice));
+        formData.put("currency", "UAH");
+        formData.put("payerId ", payLoad);
+        formData.put("paymentSystem", "Card3");
+        formData.put("urlResult", "http://site.com/urlResult");
+        formData.put("urlSuccess", "http://site.com/urlSuccess");
+        formData.put("urlFail", "http://site.com/urlFail");
+        formData.put("fullCallback", "1");
+
+        StringBuilder signData = new StringBuilder();
+        for (String value : formData.values()) {
+            signData.append(value);
+        }
+        signData.append(secret_key);
+        String sign = md5(signData.toString());
+
+        formData.put("sign", sign);
+
+        StringBuilder postData = new StringBuilder();
+        for (Map.Entry<String, String> entry : formData.entrySet()) {
+            if (postData.length() != 0) postData.append('&');
+            postData.append(entry.getKey());
+            postData.append('=');
+            postData.append(entry.getValue());
+        }
+
+        URL obj = new URL(url);
+        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
+
+        con.setRequestMethod("POST");
+
+        con.setDoOutput(true);
+        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+        wr.writeBytes(postData.toString());
+        wr.flush();
+        wr.close();
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
+        String inputLine;
+        StringBuilder response = new StringBuilder();
+
+        while ((inputLine = in.readLine()) != null) {
+            response.append(inputLine);
+        }
+        in.close();
+            SendMessage main_menu_sms = new SendMessage();
+            main_menu_sms.setText("Response: " + response.toString());
+            main_menu_sms.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
+            try {
+             helpbot.execute(main_menu_sms);
+            }catch(TelegramApiException e){
+                e.printStackTrace();
+            }
+        // Распарсите ответ JSON и извлеките urlPayment
+    } catch (Exception e) {
+        e.printStackTrace();
+    }
         //change
 
         SendMessage main_menu_sms = new SendMessage();
@@ -152,6 +220,22 @@ public class YesHasQueryCommand extends QueryCommands {
         }
     }
 
+
+    // Calculate MD5 hash
+    public static String md5(String input) {
+        try {
+            java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
+            byte[] array = md.digest(input.getBytes());
+            StringBuffer sb = new StringBuffer();
+            for (int i = 0; i < array.length; ++i) {
+                sb.append(Integer.toHexString((array[i] & 0xFF) | 0x100).substring(1, 3));
+            }
+            return sb.toString();
+        } catch (java.security.NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     @Override
     public boolean apply(Update update) {
         if(update.hasCallbackQuery()) {

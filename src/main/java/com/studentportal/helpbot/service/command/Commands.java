@@ -302,7 +302,7 @@ public abstract class Commands {
         }
     }
     public void sms_to_performer(int user_price, Message message) throws IOException {
-        if (user_price < 50 || user_price > 10000) {
+        if (user_price < 300 || user_price > 10000) {
             SendMessage sendMessage = new SendMessage();
             sendMessage.setText(Text.littleMoney);
             sendMessage.setChatId(message.getChat().getId());

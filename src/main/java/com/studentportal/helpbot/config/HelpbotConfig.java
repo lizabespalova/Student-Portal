@@ -7,8 +7,6 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 
 
-
-
 @Configuration
 @Data
 @NoArgsConstructor
@@ -22,4 +20,7 @@ public class HelpbotConfig {
 
     @Value("${telegram.help.bot.tokenpay}")
     private  String tokenPay;
+
+    @Value("${telegram.help.bot.secrettokenpay}")
+    private  String SecretTokenPay;
 }

@@ -68,9 +68,8 @@ public class Helpbot extends TelegramLongPollingBot {
         return config.getToken();
     }
 
-    public String getBotTokenPay() {
-        return config.getTokenPay();
-    }
+    public String getBotTokenPay() {return config.getTokenPay();}
+    public String getBotSecretTokenPay() {return config.getSecretTokenPay();}
 
 
     public Helpbot(HelpbotConfig helpbotConfig) {
@@ -94,7 +93,6 @@ public class Helpbot extends TelegramLongPollingBot {
             e.printStackTrace();
         }
     }
-
     @Override
     public void onUpdateReceived(Update update) {
         Message message = update.getMessage();
