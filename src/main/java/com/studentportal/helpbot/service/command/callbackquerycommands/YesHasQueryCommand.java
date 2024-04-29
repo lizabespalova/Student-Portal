@@ -114,6 +114,7 @@ public class YesHasQueryCommand extends QueryCommands {
                 else{payLoad = roomsRepository.findById(i+1).get().getPayload();break;}
             }
         }
+
         for(int j=0; j<roomsRepository.count();j++){
             Rooms rooms1 = roomsRepository.findById(j + 1).get();
             if(rooms1.getRoomID().equals(update.getCallbackQuery().getMessage().getChatId())){
