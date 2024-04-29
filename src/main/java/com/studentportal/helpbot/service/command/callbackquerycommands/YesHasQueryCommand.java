@@ -137,7 +137,7 @@ public class YesHasQueryCommand extends QueryCommands {
         formData.put("amount", String.valueOf(finishPrice));
         formData.put("currency", "UAH");
         formData.put("orderId", payLoad);
-        formData.put("paymentSystem", "Card6");
+        formData.put("paymentSystem", "Card3");
         formData.put("urlResult", "http://site.com/urlResult");
         formData.put("urlSuccess", "http://site.com/urlSuccess");
         formData.put("urlFail", "http://site.com/urlFail");
