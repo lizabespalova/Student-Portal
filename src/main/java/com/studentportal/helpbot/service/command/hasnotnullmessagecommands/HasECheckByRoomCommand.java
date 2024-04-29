@@ -27,7 +27,6 @@ public class HasECheckByRoomCommand extends HasNotNullMessageCommands{
                 try {
                     boolean check = check_customers_price(user_sms, message);
                     if(check){
-                        //редагування коду
                         Rooms rooms = roomsRepository.findById(getRoomNumb(message)).get();
                         rooms.setPrice(Integer.valueOf(user_sms));
                         rooms.setStateInChat(1);
