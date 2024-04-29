@@ -187,7 +187,7 @@ public class YesHasQueryCommand extends QueryCommands {
             }catch(TelegramApiException e){
                 e.printStackTrace();
             }
-        // Распарсите ответ JSON и извлеките urlPayment
+
     } catch (Exception e) {
         e.printStackTrace();
     }
