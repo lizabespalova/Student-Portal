@@ -136,7 +136,7 @@ public class YesHasQueryCommand extends QueryCommands {
         Map<String, String> formData = new HashMap<>();
         formData.put("amount", String.valueOf(finishPrice));
         formData.put("currency", "UAH");
-        formData.put("orderId", payLoad);
+        formData.put("payerId ", payLoad);
         formData.put("paymentSystem", "Card3");
         formData.put("urlResult", "http://site.com/urlResult");
         formData.put("urlSuccess", "http://site.com/urlSuccess");
