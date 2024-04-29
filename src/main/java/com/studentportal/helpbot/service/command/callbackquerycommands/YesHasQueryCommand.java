@@ -219,13 +219,7 @@ public class YesHasQueryCommand extends QueryCommands {
             e.printStackTrace();
         }
     }
-    public static String dataToString(Map<String, String> data) {
-        StringBuilder result = new StringBuilder();
-        for (Map.Entry<String, String> entry : data.entrySet()) {
-            result.append(entry.getKey()).append(entry.getValue());
-        }
-        return result.toString();
-    }
+
 
     // Calculate MD5 hash
     public static String md5(String input) {
