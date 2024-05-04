@@ -10,8 +10,8 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.io.IOException;
 @Component
-public class HasCleaningCommand extends HasNotNullMessageCommands{
-    public HasCleaningCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
+public class HasACleaningCommand extends HasNotNullMessageCommands{
+    public HasACleaningCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
         super(helpbot, customerRepository, roomsRepository);
     }
 

@@ -227,7 +227,7 @@ public abstract class Commands {
     }
     public void setWarningToCleanRoom(Message message) throws IOException {
         SendMessage sendMessage = new SendMessage();
-        sendMessage.setText("Єлизавето, прибиральнице, видрій кімнату, сцуко!  @vasssabiiiiii");
+        sendMessage.setText("Треба очистити кімнату!  @vedmedyk_admin");
         sendMessage.setChatId(message.getChat().getId());
         try {
             // Send the message
