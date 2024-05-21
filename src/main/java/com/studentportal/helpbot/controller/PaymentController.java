@@ -11,7 +11,7 @@ import com.studentportal.helpbot.service.dopclasses.CustomerActions;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -44,7 +44,7 @@ public class PaymentController {
             if ("success".equalsIgnoreCase(status)) {
                 servePayment(orderId);
                 blockPayment(orderId);
-                return "Payment success processed";
+                return "OK"; // Возвращаем "OK" при успешной обработке
             } else if ("failure".equalsIgnoreCase(status)) {
                 return "Payment failed processed";
             } else {
@@ -56,16 +56,7 @@ public class PaymentController {
         }
     }
 
-    @GetMapping("/payment/success")
-    public String paymentSuccess() {
-        return "Оплата прошла успешно!";
-    }
-
-    @GetMapping("/payment/failure")
-    public String paymentFailure() {
-        return "Оплата не удалась. Попробуйте снова.";
-    }
-
+    // Обработка успешного платежа
     public void servePayment(String payload) {
         long roomID = 0;
         int price = 0;
@@ -105,6 +96,7 @@ public class PaymentController {
         }
     }
 
+    // Обработка неуспешного платежа
     public void blockPayment(@NotNull String payload) {
         int messageId = 0;
         long chatId = 0;
@@ -124,6 +116,7 @@ public class PaymentController {
         }
     }
 
+    // Вычисление хэша MD5
     public static String md5(String input) {
         try {
             java.security.MessageDigest md = java.security.MessageDigest.getInstance("MD5");
