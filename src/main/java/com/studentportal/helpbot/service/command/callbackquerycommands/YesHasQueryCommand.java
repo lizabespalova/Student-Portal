@@ -3,9 +3,9 @@ package com.studentportal.helpbot.service.command.callbackquerycommands;
 import org.springframework.http.*;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.DataOutputStream;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.net.URI;
+import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 import com.studentportal.helpbot.model.*;
@@ -17,6 +17,7 @@ import com.studentportal.helpbot.service.dopclasses.CustomerActions;
 import com.studentportal.helpbot.service.mainclasses.Helpbot;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.util.UriComponentsBuilder;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -77,7 +78,7 @@ public class YesHasQueryCommand extends QueryCommands {
         for(int i=0; i<roomsRepository.count();i++) {
             if (roomsRepository.findById(i+1).get().getRoomID().equals(update.getCallbackQuery().getMessage().getChatId())){
                 roomId = i+1;
-                if(roomsRepository.findById(i+1).get().getPayload()==null){
+//                if(roomsRepository.findById(i+1).get().getPayload() == null){
                     char[] sAlphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz".toCharArray();
                     int sLength = sAlphabet.length;
                     Random sRandom = new Random();
@@ -110,8 +111,8 @@ public class YesHasQueryCommand extends QueryCommands {
                     purchase.setPriceToPerformer(0);
                     purchase.setFlag(false);
                     purchaseRepository.save(purchase);
-                }
-                else{payLoad = roomsRepository.findById(i+1).get().getPayload();break;}
+//                }
+//                else{payLoad = roomsRepository.findById(i+1).get().getPayload();break;}
             }
         }
         for(int j=0; j<roomsRepository.count();j++){
@@ -129,68 +130,92 @@ public class YesHasQueryCommand extends QueryCommands {
 //        CreateInvoiceLink createInvoiceLink = new CreateInvoiceLink(Text.title, Text.formDescription, room.getPayload(), helpbot.getBotTokenPay(), "UAH",
 //         List.of(new LabeledPrice("Вартість", finishPrice * 100)));
         String invoiceLink = "";/*helpbot.execute(createInvoiceLink);*/
-        try{
-        String public_key = helpbot.getBotTokenPay();
-        String secret_key = helpbot.getBotSecretTokenPay();
-        String url = "https://merchant.betatransfer.io/api/payment?token=" + public_key;
-        Map<String, String> formData = new HashMap<>();
-        formData.put("amount", String.valueOf(finishPrice));
-        formData.put("currency", "UAH");
-        formData.put("payerId ", payLoad);
-        formData.put("paymentSystem", "Card3");
-        formData.put("urlResult", "http://site.com/urlResult");
-        formData.put("urlSuccess", "http://site.com/urlSuccess");
-        formData.put("urlFail", "http://site.com/urlFail");
-        formData.put("fullCallback", "1");
+        String finalResponse = "";
+        try {
+            String public_key = helpbot.getBotTokenPay();
+            String secret_key = helpbot.getBotSecretTokenPay();
+            Map<String, String> formData = new HashMap<>();
+            formData.put("amount", String.valueOf(finishPrice));
+            formData.put("currency", "UAH");
+            formData.put("orderId", payLoad); // Исправлено: убран лишний пробел
+            formData.put("paymentSystem", "Test");
+            formData.put("urlResult", "http://site.com/urlResult");
+            formData.put("urlSuccess", "http://site.com/urlSuccess");
+            formData.put("urlFail", "http://site.com/urlFail");
+            formData.put("fullCallback", "1");
 
-        StringBuilder signData = new StringBuilder();
-        for (String value : formData.values()) {
-            signData.append(value);
-        }
-        signData.append(secret_key);
-        String sign = md5(signData.toString());
+            StringBuilder signData = new StringBuilder();
+            for (String value : formData.values()) {
+                signData.append(value);
+            }
+            signData.append(secret_key);
+            String sign = md5(signData.toString());
 
-        formData.put("sign", sign);
+            formData.put("sign", sign);
 
-        StringBuilder postData = new StringBuilder();
-        for (Map.Entry<String, String> entry : formData.entrySet()) {
-            if (postData.length() != 0) postData.append('&');
-            postData.append(entry.getKey());
-            postData.append('=');
-            postData.append(entry.getValue());
-        }
+            // Строим URL с параметрами
+            UriComponentsBuilder builder = UriComponentsBuilder.fromHttpUrl("https://merchant.betatransfer.io/api/payment")
+                    .queryParam("token", public_key); // Добавляем токен в качестве параметра
 
-        URL obj = new URL(url);
-        HttpURLConnection con = (HttpURLConnection) obj.openConnection();
-
-        con.setRequestMethod("POST");
-
-        con.setDoOutput(true);
-        DataOutputStream wr = new DataOutputStream(con.getOutputStream());
-        wr.writeBytes(postData.toString());
-        wr.flush();
-        wr.close();
-
-        BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-        String inputLine;
-        StringBuilder response = new StringBuilder();
-
-        while ((inputLine = in.readLine()) != null) {
-            response.append(inputLine);
-        }
-        in.close();
-            SendMessage main_menu_sms = new SendMessage();
-            main_menu_sms.setText("Response: " + response.toString());
-            main_menu_sms.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
-            try {
-             helpbot.execute(main_menu_sms);
-            }catch(TelegramApiException e){
-                e.printStackTrace();
+            // Добавляем остальные параметры из formData
+            for (Map.Entry<String, String> entry : formData.entrySet()) {
+                builder.queryParam(entry.getKey(), entry.getValue());
             }
 
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
+            // Получаем URL с параметрами
+            URI uri = builder.build().toUri();
+
+            // Создаем соединение
+            HttpURLConnection con = (HttpURLConnection) uri.toURL().openConnection();
+
+            con.setRequestMethod("POST");
+            con.setDoOutput(true);
+
+            // Отправляем данные
+            try (OutputStream os = con.getOutputStream()) {
+                StringBuilder postDataBytes = new StringBuilder();
+                for (Map.Entry<String, String> entry : formData.entrySet()) {
+                    if (postDataBytes.length() != 0) postDataBytes.append('&');
+                    postDataBytes.append(URLEncoder.encode(entry.getKey(), "UTF-8"));
+                    postDataBytes.append('=');
+                    postDataBytes.append(URLEncoder.encode(entry.getValue(), "UTF-8"));
+                }
+                byte[] postDataBytesArray = postDataBytes.toString().getBytes("UTF-8");
+                os.write(postDataBytesArray);
+            }
+
+            // Получаем ответ
+            try (BufferedReader br = new BufferedReader(new InputStreamReader(con.getInputStream(), "UTF-8"))) {
+                StringBuilder response = new StringBuilder();
+                String responseLine;
+                while ((responseLine = br.readLine()) != null) {
+                    response.append(responseLine.trim());
+                }
+
+                // Отправляем ответ
+                finalResponse = response.toString();
+                int index = finalResponse.indexOf("\"urlPayment\"");
+                if (index != -1) {
+                    index = finalResponse.indexOf("\"", index + "\"urlPayment\"".length() + 1);
+                    if (index != -1) {
+                        // Найти конечный индекс значения ссылки
+                        int endIndex = finalResponse.indexOf("\"", index + 1);
+                        if (endIndex != -1) {
+                            // Извлечь ссылку на оплату
+                            invoiceLink = finalResponse.substring(index + 1, endIndex);
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } catch (Exception e) {
+            SendMessage main_menu_sms = new SendMessage();
+            main_menu_sms.setText("Виникла помилка ");
+            main_menu_sms.setChatId(update.getCallbackQuery().getMessage().getChat().getId());
+            helpbot.execute(main_menu_sms);
+            e.printStackTrace();
+        }
         //change
 
         SendMessage main_menu_sms = new SendMessage();

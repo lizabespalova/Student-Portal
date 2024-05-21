@@ -13,8 +13,8 @@ public class HasSuccessfulPaymentCommand extends HasMessageCommands{
 
     @Override
     public void resolve(Update update) {
-        servePayment(update.getMessage().getSuccessfulPayment());
-        blockPayment(update.getMessage().getSuccessfulPayment());
+ //      servePayment(update.getMessage().getSuccessfulPayment());
+//        blockPayment(update.getMessage().getSuccessfulPayment());
     }
 
     @Override

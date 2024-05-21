@@ -55,68 +55,7 @@ public abstract class HasMessageCommands extends Commands implements BotHasMessa
         customer.setPriceFlag(0);
         customerRepository.save(customer);
     }
-    public void servePayment(SuccessfulPayment successfulPayment){
-        long roomID = 0;
-        int price =0;
-        if(!purchaseRepository.findById(successfulPayment.getInvoicePayload()).isEmpty()){
-            roomID=purchaseRepository.findById(successfulPayment.getInvoicePayload()).get().getRoomID();
-        }
-        for(int i=0; i<roomsRepository.count();i++){
-            if(roomsRepository.findById(i+1).get().getRoomID()==roomID){
-                price = roomsRepository.findById(i+1).get().getPrice();
-                break;
-            }
-        }
-        CustomerActions customerActions = new CustomerActions(customerRepository);
-        int finishPrice = customerActions.finish_price_for_performer(price);
-        Purchase purchase = purchaseRepository.findById(successfulPayment.getInvoicePayload()).get();
-        purchase.setFlag(true);
-        purchase.setPriceToPerformer(finishPrice);
-        purchase.setChargeID(successfulPayment.getProviderPaymentChargeId());
-        purchaseRepository.save(purchase);
-        for(int i=0; i<roomsRepository.count();i++) {
-            if (roomsRepository.findById(i + 1).get().getPayload() != null) {
-                if (roomsRepository.findById(i + 1).get().getPayload().equals(successfulPayment.getInvoicePayload())) {
-                    Rooms rooms = roomsRepository.findById(i + 1).get();
-                    rooms.setStateInChat(1);
-                    rooms.setFollowing(1);
-                    roomsRepository.save(rooms);
-                    break;
-                }
-            }
-        }
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(roomID);
-        sendMessage.setText(Text.msgPayYes);
-        try {
-            // Send the message
-            helpbot.execute(sendMessage);
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-    }
-    public void blockPayment(@NotNull SuccessfulPayment successfulPayment){
-        int messageId = 0;
-        long chatId=0;
-        if(!purchaseRepository.findById(successfulPayment.getInvoicePayload()).isEmpty()){
-            messageId = purchaseRepository.findById(successfulPayment.getInvoicePayload()).get().getMessageID();
-            chatId = purchaseRepository.findById(successfulPayment.getInvoicePayload()).get().getRoomID();
 
-        }
-        EditMessageText editMessageText = new EditMessageText();
-        editMessageText.setChatId(chatId);
-        editMessageText.setMessageId(messageId);
-        editMessageText.setText(Text.isPaid);
-
-        try {
-            // Send the message
-            helpbot.execute(editMessageText);
-
-        } catch (TelegramApiException e) {
-            e.printStackTrace();
-        }
-
-    }
     public void deleteChatMember(Update update) throws IOException {
         long customerID=0;
         long performerID=0;
