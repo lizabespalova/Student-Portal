@@ -39,6 +39,8 @@ public class Text {
     public static final String chat_text = EmojiParser.parseToUnicode("Вкажіть, будь ласка, ціну. У випадку закінчення угоди, натисніть будь ласка на кнопку \"Кінець угоди\" та пройдіть опитування. Якщо ви помітили співрозмовника у шахрайстві, зверніться до адміністрації, робіть це тайно. Успіхів!)");
     public static final String performerRegister = EmojiParser.parseToUnicode("Зареєструватися, як виконавець"+":woman_office_worker:");
     public static final String priceChat = EmojiParser.parseToUnicode("Ціна"+":moneybag:");
+    public static final String rating = EmojiParser.parseToUnicode("Мій рейтинг"+":trophy:");
+
     public static final String endBargain = EmojiParser.parseToUnicode("Завершити угоду"+":end:");
     public static final String title = EmojiParser.parseToUnicode("Форма для оплати"+":page_with_curl:");
     public static final String invocieDescription = EmojiParser.parseToUnicode("Шановний користувач, сплатіть, будь ласка, вартість вашого завдання з додаванням відсотка за користування ботом.(до 200 грн - 10 грн, 201грн та вище-+5% від вартості завдання). "+":credit_card:"+". Коли виконавець виконає ваше завдання,гроші будуть переведено виконавцю. У випадку підозри на шахрайство/шахрайства зверніться до адміністратора. (у закріпленому повідомленні або в групі.)"+"\n:heavy_exclamation_mark:Увага: з виконавця буде снято такий самий відсоток"+"\nСума, яку необхідно сплатити користувачу:");

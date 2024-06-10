@@ -1,6 +1,10 @@
 package com.studentportal.helpbot.service.command.callbackquerycommands;
 
+import com.studentportal.helpbot.model.Customer;
+import com.studentportal.helpbot.model.Performer;
+import com.studentportal.helpbot.model.Post;
 import com.studentportal.helpbot.repository.CustomerRepository;
+import com.studentportal.helpbot.repository.PerformerRepository;
 import com.studentportal.helpbot.repository.PostRepository;
 import com.studentportal.helpbot.model.Rooms;
 import com.studentportal.helpbot.repository.RoomsRepository;
@@ -29,6 +33,8 @@ import java.util.List;
 public class SuccessfulBargainHasQueryCommand extends QueryCommands {
     @Autowired
     private PostRepository postRepository;
+    @Autowired
+    private PerformerRepository performerRepository;
     public SuccessfulBargainHasQueryCommand(Helpbot helpbot, CustomerRepository customerRepository, RoomsRepository roomsRepository) {
         super(helpbot, customerRepository, roomsRepository);
     }
@@ -53,44 +59,45 @@ public class SuccessfulBargainHasQueryCommand extends QueryCommands {
             }
 
         }
-
-        int roomId=return_chat_link_and_show_sms_in_group(chatId, update);
-        return_chat_link_and_show_sms_for_performer_in_group( performerID, postID, roomId);
-        try {
-            set_sms_in_chat(roomId);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        Post post = postRepository.findById(Integer.valueOf(postID)).get();
+       /* int roomId=*/return_chat_link_and_show_sms_in_group(chatId, update, performerID);
+        return_chat_link_and_show_sms_for_performer_in_group( performerID, post.getCustomer_id(), postID/*, roomId*/);
+//        try {
+//            set_sms_in_chat(roomId);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        }
     }
-    public int  return_chat_link_and_show_sms_in_group(long chatID, Update update){
-        int room_num = 0;
-        String postUrl = null;
-        for(int i=0;i<roomsRepository.count();i++) {
-            if(roomsRepository.findById(i+1).get().isIsFree()) {
-                postUrl = roomsRepository.findById(i + 1).get().getChatLink();
-                room_num = i+1;
-                Date date = new Date();
-                String currentDate = String.valueOf(date);
-                Rooms rooms = roomsRepository.findById(i+1).get();
-                rooms.setIsFree(false);
-                rooms.setDate(currentDate);
-                rooms.setFollowing(0);
-                rooms.setCustomerID(update.getCallbackQuery().getMessage().getChatId());
-                roomsRepository.save(rooms);
-                break;
-            }
-        }
+    public void  return_chat_link_and_show_sms_in_group(long chatID, Update update, String performerID){
+//        int room_num = 0;
+//        String postUrl = null;
+//        for(int i=0;i<roomsRepository.count();i++) {
+//            if(roomsRepository.findById(i+1).get().isIsFree()) {
+//                postUrl = roomsRepository.findById(i + 1).get().getChatLink();
+//                room_num = i+1;
+//                Date date = new Date();
+//                String currentDate = String.valueOf(date);
+//                Rooms rooms = roomsRepository.findById(i+1).get();
+//                rooms.setIsFree(false);
+//                rooms.setDate(currentDate);
+//                rooms.setFollowing(0);
+//                rooms.setCustomerID(update.getCallbackQuery().getMessage().getChatId());
+//                roomsRepository.save(rooms);
+//                break;
+//            }
+//        }
         EditMessageText editMessageText = new EditMessageText();
         editMessageText.setChatId(chatID);
         editMessageText.setMessageId((int) update.getCallbackQuery().getMessage().getMessageId());
-        editMessageText.setText("Посилання на чат з виконавцем");
+        Performer performer = performerRepository.findById(Long.valueOf(performerID)).get();
+        editMessageText.setText("Тепер ви можете спілкуватися з виконавцем: " + performer.getSurname() + " " + "@"+performer.getUser_nick());
         InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
         List<InlineKeyboardButton> row_inline=new ArrayList<>();
         var link_Button = new InlineKeyboardButton();
-        link_Button.setText(Text.go_chat);
-        link_Button.setUrl(postUrl);
-        link_Button.setCallbackData(Subjects.LINK.toString()+","+room_num);
+        link_Button.setText(/*Text.go_chat*/"Оцінити вкиноавця");
+//        link_Button.setUrl(postUrl);
+        link_Button.setCallbackData(/*Subjects.LINK.toString()+","+room_num*/"CUSTOMERSNOTE_"+performerID);
         row_inline.add(link_Button);
         rows_inline.add(row_inline);
         inline_keybord.setKeyboard(rows_inline);
@@ -102,27 +109,28 @@ public class SuccessfulBargainHasQueryCommand extends QueryCommands {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-        return room_num;
+//        return room_num;
     }
-    public void return_chat_link_and_show_sms_for_performer_in_group(String performerID, String postID, int roomID){
-        Rooms rooms = roomsRepository.findById(roomID).get();
-        rooms.setPerformerID(Long.valueOf(performerID));
-        rooms.setPostId(Long.valueOf(postID));
-        roomsRepository.save(rooms);
-        String url = roomsRepository.findById(roomID).get().getChatLink();
-        CustomerActions customerActions = new CustomerActions(customerRepository);
+    public void return_chat_link_and_show_sms_for_performer_in_group(String performerID,Long customerID, String postID/*, int roomID*/){
+//        Rooms rooms = roomsRepository.findById(roomID).get();
+//        rooms.setPerformerID(Long.valueOf(performerID));
+//        rooms.setPostId(Long.valueOf(postID));
+//        roomsRepository.save(rooms);
+//        String url = roomsRepository.findById(roomID).get().getChatLink();
+//        CustomerActions customerActions = new CustomerActions(customerRepository);
+        Customer customer = customerRepository.findById(Long.valueOf(customerID)).get();
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(performerID);
         sendMessage.setParseMode("HTML");
-        sendMessage.setText("Посилання на чат з користувачем з посту:\n"+ postRepository.findById(Integer.valueOf(postID)).get().getLink() /*customerActions.get_customer_post_link_tostr(update,postRepository)*/);
+        sendMessage.setText("Користувач дав згоду. тепер ви можете спілкуватись. Пост: "+ postRepository.findById(Integer.valueOf(postID)).get().getLink() + " Користувач: " + customer.getName() +" "+ "@"+customer.getUser_nick() /*customerActions.get_customer_post_link_tostr(update,postRepository)*/);
         InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
         List<InlineKeyboardButton> row_inline=new ArrayList<>();
-        var link_Button = new InlineKeyboardButton();
-        link_Button.setText(Text.go_chat);
-        link_Button.setUrl(url);
-        link_Button.setCallbackData(Subjects.LINK.toString()+","+roomID);
-        row_inline.add(link_Button);
+//        var link_Button = new InlineKeyboardButton();
+//        link_Button.setText(Text.go_chat);
+//        link_Button.setUrl(url);
+//        link_Button.setCallbackData(Subjects.LINK.toString()+","+roomID);
+//        row_inline.add(link_Button);
         rows_inline.add(row_inline);
         inline_keybord.setKeyboard(rows_inline);
         sendMessage.setReplyMarkup(inline_keybord);

@@ -81,12 +81,13 @@ public class Helpbot extends TelegramLongPollingBot {
         listofCommands.add(new BotCommand("/status", text));
         text = EmojiParser.parseToUnicode(":dove:" + " " + "Допомога");
         listofCommands.add(new BotCommand("/help", text));
-        text = EmojiParser.parseToUnicode(":information_source:" + " " + "Договір");
-        listofCommands.add(new BotCommand("/info", text));
-        text = EmojiParser.parseToUnicode(":moneybag:" + " " + "Тарифи");
-        listofCommands.add(new BotCommand("/tariffs", text));
+//        text = EmojiParser.parseToUnicode(":information_source:" + " " + "Договір");
+//        listofCommands.add(new BotCommand("/info", text));
+//        text = EmojiParser.parseToUnicode(":moneybag:" + " " + "Тарифи");
+//        listofCommands.add(new BotCommand("/tariffs", text));
         text = EmojiParser.parseToUnicode(":closed_book:" + " " + "Опис");
         listofCommands.add(new BotCommand("/description", text));
+
         try {
             this.execute(new SetMyCommands(listofCommands, new BotCommandScopeDefault(), null));
         } catch (TelegramApiException e) {
@@ -130,7 +131,7 @@ public class Helpbot extends TelegramLongPollingBot {
                     }
                     case "/help": {
                         help_button(String.valueOf(message.getChatId()));
-                        rules_buttons(String.valueOf(message.getChatId()));
+                       // rules_buttons(String.valueOf(message.getChatId()));
                         break;
                     }
                     case "/status": {
@@ -138,33 +139,35 @@ public class Helpbot extends TelegramLongPollingBot {
                         set_menu_Inline(String.valueOf(message.getChatId()));
                         break;
                     }
-                    case "/info": {
-                         set_contract(String.valueOf(message.getChatId()));
-                        break;
-                    }
-                    case "/tariffs": {
-                        SendMessage tariff_sms = new SendMessage();
-                        tariff_sms.setChatId(message.getChatId());
-                        tariff_sms.setText("Бот бере відсоток за отримання грошей. За цей відсоток вам гарантується безпека. \n" +
-                                "\n" +
-                                "                                                          Тарифи\n" +
-                                "\n" +
-                                "Спілка до 200 грн: 10 грн з виконавця та користувача \n" +
-                                "\n" +
-                                "Спілка вище або дорівнює 201 грн: 5% від вартості завдання\n" +
-                                "\n" +
-                                "Гроші на рахунок виконавця буде відправлено протягом 3 робочих днів з відрахуванням комісії");
 
-                        try {
-                            // Send the message
-                            execute(tariff_sms);
-                        } catch (TelegramApiException e) {
-                            e.printStackTrace();
-                        }
-                    } case "/description":{
+//                    case "/info": {
+//                         set_contract(String.valueOf(message.getChatId()));
+//                        break;
+//                    }
+//                    case "/tariffs": {
+//                        SendMessage tariff_sms = new SendMessage();
+//                        tariff_sms.setChatId(message.getChatId());
+//                        tariff_sms.setText("Бот бере відсоток за отримання грошей. За цей відсоток вам гарантується безпека. \n" +
+//                                "\n" +
+//                                "                                                          Тарифи\n" +
+//                                "\n" +
+//                                "Спілка до 200 грн: 10 грн з виконавця та користувача \n" +
+//                                "\n" +
+//                                "Спілка вище або дорівнює 201 грн: 5% від вартості завдання\n" +
+//                                "\n" +
+//                                "Гроші на рахунок виконавця буде відправлено протягом 3 робочих днів з відрахуванням комісії");
+//
+//                        try {
+//                            // Send the message
+//                            execute(tariff_sms);
+//                        } catch (TelegramApiException e) {
+//                            e.printStackTrace();
+//                        }
+//                    }
+                    case "/description":{
                         SendMessage tariff_sms = new SendMessage();
                         tariff_sms.setChatId(message.getChatId());
-                        tariff_sms.setText("Бот бере відсоток за отримання грошей. За цей відсоток вам гарантується безпека. \n Основна задача бота – надання безпеки між 2 сторонами спілки. Тут студенти або школярі, яким потрібна допомога з завданням можуть зі спокоєм робити свій запит та оплачувати роботу виконавця. Тепер вам більш не потрібно вирішувати, хто «перший». Користувач може спокійно відправляти гроші боту і тільки після отримання рішення, гроші переведуться виконавцю. Таким чином, користувач не загубить гроші. Виконавець також може не перейматися за оплату, адже гроші вже будуть в боті. Таким чином гарантується безпека 2 сторонам спілки.");
+                        tariff_sms.setText("Бот для розміщення оголошень для студентів");
                         try {
                             // Send the message
                             execute(tariff_sms);
@@ -197,9 +200,14 @@ public class Helpbot extends TelegramLongPollingBot {
         row1.add(Text.thiefText);
         KeyboardRow row2 = new KeyboardRow();
         row2.add(EmojiParser.parseToUnicode(Text.performerRegister));
+        KeyboardRow row3 = new KeyboardRow();
+        row3.add(EmojiParser.parseToUnicode(Text.rating));
+
         menu.add(row);
         menu.add(row1);
         menu.add(row2);
+        menu.add(row3);
+
         keyboard.setKeyboard(menu);
         keyboard.setResizeKeyboard(true);
         keyboard.setOneTimeKeyboard(false);
@@ -306,24 +314,24 @@ public class Helpbot extends TelegramLongPollingBot {
         List<InlineKeyboardButton> row_inline1 = new ArrayList<>();
         List<InlineKeyboardButton> row_inline2 = new ArrayList<>();
         List<InlineKeyboardButton> row_inline3 = new ArrayList<>();
-        var bot_guide = new InlineKeyboardButton();
-        text = EmojiParser.parseToUnicode("Правила користування ботом" + ":robot_face:");
-        bot_guide.setText(text);
-        bot_guide.setUrl("https://telegra.ph/Pravila-koristuvannya-botom-Vedmedik-05-01");
-        bot_guide.setCallbackData(Buttons.RULEBOT.toString());
-        var bot_payment = new InlineKeyboardButton();
-        text = EmojiParser.parseToUnicode("Правила оплати" + ":money_with_wings:");
-        bot_payment.setText(text);
-        bot_payment.setUrl("https://telegra.ph/Pravila-oplati-v-bot%D1%96-Vedmedik-07-07");
-        bot_payment.setCallbackData(Buttons.RULEPAYMENT.toString());
-        var bot_relations = new InlineKeyboardButton();
-        text = EmojiParser.parseToUnicode("Правила угоди" + ":handshake:");
-        bot_relations.setText(text);
-        bot_relations.setUrl("https://telegra.ph/Pravila-ugodi-v-bot%D1%96-Vedmedik-07-07");
-        bot_relations.setCallbackData(Buttons.RULERELATE.toString());
-        row_inline1.add(bot_guide);
-        row_inline2.add(bot_payment);
-        row_inline3.add(bot_relations);
+//        var bot_guide = new InlineKeyboardButton();
+//        text = EmojiParser.parseToUnicode("Правила користування ботом" + ":robot_face:");
+//        bot_guide.setText(text);
+//        bot_guide.setUrl("https://telegra.ph/Pravila-koristuvannya-botom-Vedmedik-05-01");
+//        bot_guide.setCallbackData(Buttons.RULEBOT.toString());
+//        var bot_payment = new InlineKeyboardButton();
+//        text = EmojiParser.parseToUnicode("Правила оплати" + ":money_with_wings:");
+//        bot_payment.setText(text);
+//        bot_payment.setUrl("https://telegra.ph/Pravila-oplati-v-bot%D1%96-Vedmedik-07-07");
+//        bot_payment.setCallbackData(Buttons.RULEPAYMENT.toString());
+//        var bot_relations = new InlineKeyboardButton();
+//        text = EmojiParser.parseToUnicode("Правила угоди" + ":handshake:");
+//        bot_relations.setText(text);
+//        bot_relations.setUrl("https://telegra.ph/Pravila-ugodi-v-bot%D1%96-Vedmedik-07-07");
+//        bot_relations.setCallbackData(Buttons.RULERELATE.toString());
+//        row_inline1.add(bot_guide);
+//        row_inline2.add(bot_payment);
+//        row_inline3.add(bot_relations);
         rows_inline.add(row_inline1);
         rows_inline.add(row_inline2);
         rows_inline.add(row_inline3);

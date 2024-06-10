@@ -35,37 +35,51 @@ public class PerformerRegisterHasQueryCommand extends QueryCommands {
         }
         return false;
     }
-    public void register_to_data_base_performer(User user, String chatid){
-        if(performerRepository.findById(user.getId()).isEmpty()) {
-            var chatID = user.getId();
-            Performer performer = new Performer();
-            performer.setChatID(chatID);
-            performer.setName(user.getFirstName());
-            performer.setSurname(user.getLastName());
-            performer.setUser_nick(user.getUserName());
-            performer.setBargain_amount(0);
-            performer.setRating(Text.first_performer);
-            performerRepository.save(performer);
+    public void register_to_data_base_performer(User user, String chatid) {
+        if (performerRepository.findById(user.getId()).isEmpty()) {
+
             /*performers_id = chatID;*/
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(chatid);
-            sendMessage.setText("Вас було зареєйстровано як виконавець та видано рейтинг. Поки що він порожній");
-            try {
-                // Send the message
-                helpbot.execute(sendMessage);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+            if (user.getUserName() != null) {
+                var chatID = user.getId();
+                Performer performer = new Performer();
+                performer.setChatID(chatID);
+                performer.setName(user.getFirstName());
+                performer.setSurname(user.getLastName());
+                performer.setUser_nick(user.getUserName());
+                performer.setBargain_amount(0);
+                performer.setRating(Text.first_performer);
+                performerRepository.save(performer);
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setChatId(chatid);
+                sendMessage.setText("Вас було зареєйстровано як виконавець та видано рейтинг. Поки що він порожній");
+                try {
+                    // Send the message
+                    helpbot.execute(sendMessage);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
-        }else{
-            SendMessage sendMessage = new SendMessage();
-            sendMessage.setChatId(chatid);
-            sendMessage.setText("Ви вже зареєстровані, як виконавець");
-            try {
-                // Send the message
-                helpbot.execute(sendMessage);
-            } catch (TelegramApiException e) {
-                e.printStackTrace();
+            else if (user.getUserName() == null) {
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setChatId(chatid);
+                sendMessage.setText("У вас нема імені користувача, тому ми не можемо вас зареєструвати. Додайте спочатку його в телеграмі ");
+                try {
+                    // Send the message
+                    helpbot.execute(sendMessage);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
             }
-        }
+        }  else {
+                SendMessage sendMessage = new SendMessage();
+                sendMessage.setChatId(chatid);
+                sendMessage.setText("Ви вже зареєстровані, як виконавець");
+                try {
+                    // Send the message
+                    helpbot.execute(sendMessage);
+                } catch (TelegramApiException e) {
+                    e.printStackTrace();
+                }
+            }
     }
 }
