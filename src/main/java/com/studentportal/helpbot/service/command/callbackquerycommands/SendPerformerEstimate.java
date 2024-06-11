@@ -24,9 +24,9 @@ public class SendPerformerEstimate extends QueryCommands{
     public void resolve(Update update) {
         String callbackData = update.getCallbackQuery().getData();
 
-        long performerId = Long.parseLong(callbackData.split("_")[1]);
-
-        sendEstimationMenu(update.getCallbackQuery().getMessage(), performerId);
+        long performerId = Long.parseLong(callbackData.substring(callbackData.indexOf("_") + 1, callbackData.indexOf("-")));
+        long postId = Long.parseLong(callbackData.split("-")[1]);
+        sendEstimationMenu(update.getCallbackQuery().getMessage(), performerId, postId);
     }
 
     @Override
@@ -37,7 +37,7 @@ public class SendPerformerEstimate extends QueryCommands{
         }
         return false;
     }
-    public void sendEstimationMenu(Message message, long performerId){
+    public void sendEstimationMenu(Message message, long performerId, long postId){
         EditMessageText sendMessage = new EditMessageText();
         sendMessage.setChatId(message.getChatId().toString());
         sendMessage.setMessageId(message.getMessageId());
@@ -48,7 +48,7 @@ public class SendPerformerEstimate extends QueryCommands{
             List<InlineKeyboardButton> rowInline = new ArrayList<>();
             InlineKeyboardButton button = new InlineKeyboardButton();
             button.setText(i + " " + getStars(i));
-            button.setCallbackData("rate_" + i + ":" + performerId);
+            button.setCallbackData("rate_" + i + ":" + performerId +  "-" + postId);
             rowInline.add(button);
             rowsInline.add(rowInline);
         }

@@ -106,7 +106,7 @@ public class GetAdvertismentHasQueryCommand extends QueryCommands {
             List<InlineKeyboardButton> row_inline=new ArrayList<>();
             var agree_Button = new InlineKeyboardButton();
             agree_Button.setText(Text.agree_text);
-            agree_Button.setCallbackData(update.getCallbackQuery().getMessage().getMessageId()+","+update.getCallbackQuery().getFrom().getId());/*subjects.AGREE.toString()*/
+            agree_Button.setCallbackData(messageID+","+update.getCallbackQuery().getFrom().getId());/*subjects.AGREE.toString()*/
             var cancel_Button = new InlineKeyboardButton();
             cancel_Button.setText(Text.cancel_text);
             cancel_Button.setCallbackData(Subjects.CANCEL.toString());

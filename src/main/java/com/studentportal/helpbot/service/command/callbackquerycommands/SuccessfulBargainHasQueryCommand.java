@@ -60,7 +60,7 @@ public class SuccessfulBargainHasQueryCommand extends QueryCommands {
 
         }
         Post post = postRepository.findById(Integer.valueOf(postID)).get();
-       /* int roomId=*/return_chat_link_and_show_sms_in_group(chatId, update, performerID);
+       /* int roomId=*/return_chat_link_and_show_sms_in_group(chatId, update, performerID, Long.parseLong(postID));
         return_chat_link_and_show_sms_for_performer_in_group( performerID, post.getCustomer_id(), postID/*, roomId*/);
 //        try {
 //            set_sms_in_chat(roomId);
@@ -68,7 +68,7 @@ public class SuccessfulBargainHasQueryCommand extends QueryCommands {
 //            throw new RuntimeException(e);
 //        }
     }
-    public void  return_chat_link_and_show_sms_in_group(long chatID, Update update, String performerID){
+    public void  return_chat_link_and_show_sms_in_group(long chatID, Update update, String performerID, long postId){
 //        int room_num = 0;
 //        String postUrl = null;
 //        for(int i=0;i<roomsRepository.count();i++) {
@@ -95,9 +95,9 @@ public class SuccessfulBargainHasQueryCommand extends QueryCommands {
         List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
         List<InlineKeyboardButton> row_inline=new ArrayList<>();
         var link_Button = new InlineKeyboardButton();
-        link_Button.setText(/*Text.go_chat*/"Оцінити вкиноавця");
+        link_Button.setText(/*Text.go_chat*/"Оцінити виконавця");
 //        link_Button.setUrl(postUrl);
-        link_Button.setCallbackData(/*Subjects.LINK.toString()+","+room_num*/"CUSTOMERSNOTE_"+performerID);
+        link_Button.setCallbackData(/*Subjects.LINK.toString()+","+room_num*/"CUSTOMERSNOTE_"+performerID + "-" + postId);
         row_inline.add(link_Button);
         rows_inline.add(row_inline);
         inline_keybord.setKeyboard(rows_inline);
@@ -122,7 +122,12 @@ public class SuccessfulBargainHasQueryCommand extends QueryCommands {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(performerID);
         sendMessage.setParseMode("HTML");
-        sendMessage.setText("Користувач дав згоду. тепер ви можете спілкуватись. Пост: "+ postRepository.findById(Integer.valueOf(postID)).get().getLink() + " Користувач: " + customer.getName() +" "+ "@"+customer.getUser_nick() /*customerActions.get_customer_post_link_tostr(update,postRepository)*/);
+        String userNick = customer.getUser_nick();
+        String publishNick = "";
+        if(userNick!=null){
+            publishNick += "@" + userNick;
+        }
+        sendMessage.setText("Користувач дав згоду. тепер ви можете спілкуватись. Пост: "+ postRepository.findById(Integer.valueOf(postID)).get().getLink() + " Користувач: " + customer.getName() +" "+ publishNick /*customerActions.get_customer_post_link_tostr(update,postRepository)*/);
         InlineKeyboardMarkup inline_keybord = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> rows_inline = new ArrayList<>();
         List<InlineKeyboardButton> row_inline=new ArrayList<>();
